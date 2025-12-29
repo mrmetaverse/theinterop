@@ -57,9 +57,10 @@ export default function Header({ onToggleVisuals, visualsEnabled = true }: Heade
           {/* Logo */}
           <Link
             href="/"
-            className="flex items-center gap-2 text-xl font-bold font-display text-foreground hover:text-accent-primary transition-colors"
+            className="flex flex-col font-display text-foreground hover:text-accent-primary transition-colors"
           >
-            <span className="text-gradient">The Interop</span>
+            <span className="text-xl font-bold text-gradient leading-tight">The Interop</span>
+            <span className="text-xs text-foreground-muted font-normal">with Jesse Alton</span>
           </Link>
 
           {/* Desktop Navigation */}
