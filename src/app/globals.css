@@ -1,0 +1,533 @@
+@import "tailwindcss";
+
+/* ============================================
+   The Interop — Neumorphic Design System
+   ============================================ */
+
+@theme {
+  /* Core palette - Light Mode */
+  --color-background: hsl(240 10% 96%);
+  --color-background-elevated: hsl(240 10% 98%);
+  --color-foreground: hsl(240 10% 10%);
+  --color-foreground-muted: hsl(240 8% 40%);
+  
+  /* Accent colors */
+  --color-accent-primary: hsl(220 90% 56%);
+  --color-accent-primary-hover: hsl(220 90% 48%);
+  --color-accent-secondary: hsl(280 80% 60%);
+  
+  /* Surface colors */
+  --color-card: hsl(240 10% 96%);
+  --color-card-hover: hsl(240 10% 94%);
+  --color-border: hsl(240 8% 88%);
+  --color-border-subtle: hsl(240 8% 92%);
+  
+  /* Category colors */
+  --color-category-ai-strategy: hsl(220 85% 55%);
+  --color-category-business-transformation: hsl(280 75% 55%);
+  --color-category-agent-development: hsl(160 70% 45%);
+  --color-category-future-tech: hsl(320 80% 55%);
+  --color-category-case-studies: hsl(35 90% 55%);
+  
+  /* Typography */
+  --font-display: 'Sora', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  
+  /* Animation */
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+  --transition-slow: 400ms ease;
+  
+  /* Shadows */
+  --shadow-neu: 8px 8px 16px hsl(240 10% 86%), -8px -8px 16px hsl(240 10% 100%);
+  --shadow-neu-sm: 4px 4px 8px hsl(240 10% 88%), -4px -4px 8px hsl(240 10% 100%);
+  --shadow-neu-inset: inset 4px 4px 8px hsl(240 10% 88%), inset -4px -4px 8px hsl(240 10% 100%);
+  --shadow-neu-pressed: inset 2px 2px 4px hsl(240 10% 86%), inset -2px -2px 4px hsl(240 10% 100%);
+  
+  /* Animations */
+  --animate-fade-in: fadeIn 0.5s ease-out;
+  --animate-fade-in-up: fadeInUp 0.5s ease-out;
+  --animate-fade-in-down: fadeInDown 0.5s ease-out;
+  --animate-float: float 6s ease-in-out infinite;
+}
+
+/* Dark mode overrides */
+.dark {
+  --color-background: hsl(240 15% 8%);
+  --color-background-elevated: hsl(240 15% 12%);
+  --color-foreground: hsl(240 10% 95%);
+  --color-foreground-muted: hsl(240 8% 60%);
+  
+  --color-card: hsl(240 15% 10%);
+  --color-card-hover: hsl(240 15% 14%);
+  --color-border: hsl(240 12% 18%);
+  --color-border-subtle: hsl(240 12% 14%);
+  
+  --shadow-neu: 8px 8px 16px hsl(240 15% 4%), -8px -8px 16px hsl(240 15% 14%);
+  --shadow-neu-sm: 4px 4px 8px hsl(240 15% 5%), -4px -4px 8px hsl(240 15% 13%);
+  --shadow-neu-inset: inset 4px 4px 8px hsl(240 15% 5%), inset -4px -4px 8px hsl(240 15% 13%);
+  --shadow-neu-pressed: inset 2px 2px 4px hsl(240 15% 4%), inset -2px -2px 4px hsl(240 15% 12%);
+}
+
+/* ============================================
+   Keyframes
+   ============================================ */
+
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInDown {
+  0% { opacity: 0; transform: translateY(-20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* ============================================
+   Base Styles
+   ============================================ */
+
+* {
+  border-color: var(--color-border);
+  }
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-body);
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+code, pre {
+  font-family: var(--font-mono);
+}
+
+/* Reduce motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ============================================
+   Neumorphic Components
+   ============================================ */
+
+.neu-card {
+  background-color: var(--color-card);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: var(--shadow-neu);
+  transition: box-shadow var(--transition-base), transform var(--transition-base);
+}
+
+.neu-card:hover {
+  background-color: var(--color-card-hover);
+  transform: translateY(-2px);
+}
+
+.neu-card-sm {
+  background-color: var(--color-card);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  box-shadow: var(--shadow-neu-sm);
+}
+
+.neu-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 0.75rem;
+  padding: 0.75rem 1.5rem;
+  font-weight: 500;
+  background-color: var(--color-card);
+  color: var(--color-foreground);
+  box-shadow: var(--shadow-neu-sm);
+  transition: all var(--transition-base);
+}
+
+.neu-button:hover {
+  box-shadow: var(--shadow-neu);
+  transform: translateY(-1px);
+}
+
+.neu-button:active {
+  box-shadow: var(--shadow-neu-pressed);
+  transform: translateY(0);
+}
+
+.neu-button-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 0.75rem;
+  padding: 0.75rem 1.5rem;
+  font-weight: 500;
+  color: white;
+  background: linear-gradient(135deg, var(--color-accent-primary), var(--color-accent-secondary));
+  box-shadow: var(--shadow-neu-sm);
+  transition: all var(--transition-base);
+}
+
+.neu-button-primary:hover {
+  box-shadow: var(--shadow-neu);
+  transform: translateY(-1px);
+  filter: brightness(1.1);
+}
+
+.neu-button-primary:active {
+  box-shadow: var(--shadow-neu-pressed);
+  transform: translateY(0);
+}
+
+.neu-input {
+  width: 100%;
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+  background-color: var(--color-card);
+  color: var(--color-foreground);
+  border: 1px solid var(--color-border-subtle);
+  box-shadow: var(--shadow-neu-inset);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.neu-input::placeholder {
+  color: var(--color-foreground-muted);
+}
+
+.neu-input:focus {
+  outline: none;
+  border-color: var(--color-accent-primary);
+  box-shadow: var(--shadow-neu-inset), 0 0 0 3px hsl(220 90% 56% / 0.15);
+}
+
+.neu-tag {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 0.5rem;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  background-color: var(--color-card);
+  color: var(--color-foreground-muted);
+  box-shadow: var(--shadow-neu-sm);
+}
+
+/* Category-specific tags */
+.neu-tag-ai-strategy {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 0.5rem;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  background-color: var(--color-card);
+  box-shadow: var(--shadow-neu-sm);
+  color: var(--color-category-ai-strategy);
+}
+
+.neu-tag-business-transformation {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 0.5rem;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  background-color: var(--color-card);
+  box-shadow: var(--shadow-neu-sm);
+  color: var(--color-category-business-transformation);
+}
+
+.neu-tag-agent-development {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 0.5rem;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  background-color: var(--color-card);
+  box-shadow: var(--shadow-neu-sm);
+  color: var(--color-category-agent-development);
+}
+
+.neu-tag-future-tech {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 0.5rem;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  background-color: var(--color-card);
+  box-shadow: var(--shadow-neu-sm);
+  color: var(--color-category-future-tech);
+}
+
+.neu-tag-case-studies {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 0.5rem;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  background-color: var(--color-card);
+  box-shadow: var(--shadow-neu-sm);
+  color: var(--color-category-case-studies);
+}
+
+/* ============================================
+   Typography Utilities
+   ============================================ */
+
+.text-gradient {
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  background-image: linear-gradient(135deg, var(--color-accent-primary), var(--color-accent-secondary));
+}
+
+.bg-gradient-accent {
+  background-image: linear-gradient(135deg, var(--color-accent-primary), var(--color-accent-secondary));
+}
+
+.bg-background {
+  background-color: var(--color-background);
+}
+
+.bg-background-elevated {
+  background-color: var(--color-background-elevated);
+}
+
+.bg-card {
+  background-color: var(--color-card);
+}
+
+.bg-card-hover {
+  background-color: var(--color-card-hover);
+}
+
+.text-foreground {
+  color: var(--color-foreground);
+}
+
+.text-foreground-muted {
+  color: var(--color-foreground-muted);
+}
+
+.text-accent-primary {
+  color: var(--color-accent-primary);
+}
+
+.border-border {
+  border-color: var(--color-border);
+}
+
+.border-border-subtle {
+  border-color: var(--color-border-subtle);
+}
+
+/* ============================================
+   Prose Styles for Blog Posts
+   ============================================ */
+
+.prose-interop {
+  color: var(--color-foreground);
+}
+
+.prose-interop h1,
+.prose-interop h2,
+.prose-interop h3,
+.prose-interop h4,
+.prose-interop h5,
+.prose-interop h6 {
+  color: var(--color-foreground);
+  font-weight: 600;
+  font-family: var(--font-display);
+}
+
+.prose-interop h1 { font-size: 2.25rem; margin-top: 2rem; margin-bottom: 1rem; }
+.prose-interop h2 { font-size: 1.875rem; margin-top: 2rem; margin-bottom: 1rem; }
+.prose-interop h3 { font-size: 1.5rem; margin-top: 1.5rem; margin-bottom: 0.75rem; }
+.prose-interop h4 { font-size: 1.25rem; margin-top: 1.5rem; margin-bottom: 0.75rem; }
+
+.prose-interop p { margin: 1rem 0; line-height: 1.75; }
+
+.prose-interop a {
+  color: var(--color-accent-primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.prose-interop a:hover {
+  color: var(--color-accent-primary-hover);
+}
+
+.prose-interop strong { font-weight: 600; }
+
+.prose-interop ul,
+.prose-interop ol { margin: 1rem 0; padding-left: 1.5rem; }
+.prose-interop li { margin: 0.5rem 0; }
+.prose-interop ul { list-style-type: disc; }
+.prose-interop ol { list-style-type: decimal; }
+
+.prose-interop blockquote {
+  border-left: 4px solid var(--color-accent-primary);
+  padding-left: 1rem;
+  margin: 1.5rem 0;
+  font-style: italic;
+  color: var(--color-foreground-muted);
+}
+
+.prose-interop code {
+  background-color: var(--color-card);
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  font-family: var(--font-mono);
+}
+
+.prose-interop pre {
+  background-color: var(--color-card);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  margin: 1.5rem 0;
+  overflow-x: auto;
+  box-shadow: var(--shadow-neu-inset);
+}
+
+.prose-interop pre code {
+  background-color: transparent;
+  padding: 0;
+}
+
+.prose-interop img {
+  border-radius: 0.75rem;
+  margin: 1.5rem 0;
+  box-shadow: var(--shadow-neu);
+}
+
+.prose-interop hr {
+  margin: 2rem 0;
+  border-color: var(--color-border);
+}
+
+.prose-interop table {
+  width: 100%;
+  margin: 1.5rem 0;
+}
+
+.prose-interop th,
+.prose-interop td {
+  border: 1px solid var(--color-border);
+  padding: 0.5rem 1rem;
+  text-align: left;
+}
+
+.prose-interop th {
+  background-color: var(--color-card);
+  font-weight: 600;
+}
+
+/* ============================================
+   Three.js Container
+   ============================================ */
+
+.three-container {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+
+.three-container.disabled {
+  display: none;
+}
+
+/* ============================================
+   Reading Progress Bar
+   ============================================ */
+
+.reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 4px;
+  background: linear-gradient(135deg, var(--color-accent-primary), var(--color-accent-secondary));
+  z-index: 50;
+  transform-origin: left;
+}
+
+/* ============================================
+   Animation Utilities
+   ============================================ */
+
+.animate-fade-in {
+  animation: var(--animate-fade-in);
+}
+
+.animate-fade-in-up {
+  animation: var(--animate-fade-in-up);
+}
+
+.animate-fade-in-down {
+  animation: var(--animate-fade-in-down);
+}
+
+.animate-float {
+  animation: var(--animate-float);
+}
+
+/* ============================================
+   Fonts Import
+   ============================================ */
+
+@font-face {
+  font-family: 'Sora';
+  font-style: normal;
+  font-weight: 100 800;
+  font-display: swap;
+  src: url('https://fonts.gstatic.com/s/sora/v12/xMQOuFFYT72X5wkB_18qmnndmSdSnk-DKQRDA.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hjp-Ek-_EeA.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 100 800;
+  font-display: swap;
+  src: url('https://fonts.gstatic.com/s/jetbrainsmono/v18/tDbY2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKxjPVmUsaaDhw.woff2') format('woff2');
+}

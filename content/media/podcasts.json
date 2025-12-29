@@ -1,0 +1,41 @@
+{
+  "source": {
+    "name": "The Metaverse Interop Show, the Podcast",
+    "url": "https://mrmetaverse.substack.com/listen/the-metaverse-interop-show-the-podcast",
+    "platform": "substack",
+    "description": "Welcome to Metaverse Interop, a podcast that helps metaverse founders and investors make informed product decisions by promoting open standards.",
+    "status": "archived"
+  },
+  "episodes": [
+    {
+      "id": "podcast-001",
+      "title": "Lighthouse: Explore the Metaverse with your friends",
+      "description": "An interview with Jonathan Brun of Lighthouse.",
+      "date": "2023-04-15",
+      "duration": "28:19",
+      "audioUrl": "https://mrmetaverse.substack.com/listen/the-metaverse-interop-show-the-podcast",
+      "episodeUrl": "https://mrmetaverse.substack.com/listen/the-metaverse-interop-show-the-podcast",
+      "originalSource": "substack"
+    },
+    {
+      "id": "podcast-002",
+      "title": "A chat with Tom Ffiske (Accenture, Immersive Wire)",
+      "description": "We discuss the Metaverse, Interop, and our ideal virtual Worlds.",
+      "date": "2023-02-24",
+      "duration": "41:11",
+      "audioUrl": "https://mrmetaverse.substack.com/listen/the-metaverse-interop-show-the-podcast",
+      "episodeUrl": "https://mrmetaverse.substack.com/listen/the-metaverse-interop-show-the-podcast",
+      "originalSource": "substack"
+    },
+    {
+      "id": "podcast-003",
+      "title": "Metaverse AMA, Steamy Tub Edition (AUDIO)",
+      "description": "Caroline and I take a break from vacation to chat about the Metaverse.",
+      "date": "2023-02-21",
+      "duration": "28:29",
+      "audioUrl": "https://mrmetaverse.substack.com/listen/the-metaverse-interop-show-the-podcast",
+      "episodeUrl": "https://mrmetaverse.substack.com/listen/the-metaverse-interop-show-the-podcast",
+      "originalSource": "substack"
+    }
+  ]
+}

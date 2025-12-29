@@ -1,0 +1,133 @@
+{
+  "channels": [
+    {
+      "id": "jessealton",
+      "name": "Jesse Alton",
+      "url": "https://www.youtube.com/@jessealton",
+      "videosUrl": "https://www.youtube.com/@jessealton/videos",
+      "description": "Active channel featuring AI development, product strategy, and technology insights.",
+      "active": true
+    },
+    {
+      "id": "1metaverse",
+      "name": "Metaverse Interop Show",
+      "url": "https://www.youtube.com/@1metaverse",
+      "videosUrl": "https://www.youtube.com/@1metaverse/videos",
+      "description": "Archive of the Metaverse Interop Show - video format episodes featuring interviews and discussions on metaverse interoperability. This show is now archived/closed.",
+      "active": false,
+      "status": "archived"
+    }
+  ],
+  "videos": [
+    {
+      "id": "vid-ja-001",
+      "channelId": "jessealton",
+      "title": "Building AI Agents with MCP",
+      "description": "Deep dive into building AI agents using Model Context Protocol for enterprise applications.",
+      "date": "2024-12-15",
+      "duration": "18:32",
+      "youtubeId": "",
+      "thumbnailUrl": "",
+      "tags": ["AI agents", "MCP", "enterprise AI"]
+    },
+    {
+      "id": "vid-ja-002",
+      "channelId": "jessealton",
+      "title": "Magick ML: No-Code AI Development",
+      "description": "Introduction to Magick ML's visual node-graph interface for building AI applications without code.",
+      "date": "2024-11-20",
+      "duration": "24:15",
+      "youtubeId": "",
+      "thumbnailUrl": "",
+      "tags": ["Magick ML", "no-code", "AI development"]
+    },
+    {
+      "id": "vid-ja-003",
+      "channelId": "jessealton",
+      "title": "AI Strategy for Founders",
+      "description": "How founders can leverage AI to build competitive advantages and scale faster.",
+      "date": "2024-10-05",
+      "duration": "15:48",
+      "youtubeId": "",
+      "thumbnailUrl": "",
+      "tags": ["founders", "AI strategy", "startup"]
+    },
+    {
+      "id": "vid-ja-004",
+      "channelId": "jessealton",
+      "title": "The Future of AI Agents",
+      "description": "Predictions and insights on where AI agents are heading in 2025 and beyond.",
+      "date": "2024-09-12",
+      "duration": "21:07",
+      "youtubeId": "",
+      "thumbnailUrl": "",
+      "tags": ["AI agents", "future tech", "predictions"]
+    },
+    {
+      "id": "vid-1m-001",
+      "channelId": "1metaverse",
+      "title": "OMI Group: Building Open Metaverse Standards",
+      "description": "Discussion with OMI Group members about creating interoperable metaverse standards.",
+      "date": "2023-03-15",
+      "duration": "45:22",
+      "youtubeId": "",
+      "thumbnailUrl": "",
+      "tags": ["OMI", "metaverse", "standards", "interoperability"]
+    },
+    {
+      "id": "vid-1m-002",
+      "channelId": "1metaverse",
+      "title": "The State of Metaverse Interoperability",
+      "description": "Overview of current progress and challenges in metaverse interoperability.",
+      "date": "2023-02-28",
+      "duration": "38:45",
+      "youtubeId": "",
+      "thumbnailUrl": "",
+      "tags": ["metaverse", "interoperability", "standards"]
+    },
+    {
+      "id": "vid-1m-003",
+      "channelId": "1metaverse",
+      "title": "Avatar Interoperability Standards",
+      "description": "Technical deep dive into avatar portability across virtual worlds.",
+      "date": "2023-01-20",
+      "duration": "42:18",
+      "youtubeId": "",
+      "thumbnailUrl": "",
+      "tags": ["avatars", "VRM", "glTF", "standards"]
+    },
+    {
+      "id": "vid-1m-004",
+      "channelId": "1metaverse",
+      "title": "Web3 and the Open Metaverse",
+      "description": "Exploring the intersection of Web3 technologies and open metaverse development.",
+      "date": "2022-12-10",
+      "duration": "35:30",
+      "youtubeId": "",
+      "thumbnailUrl": "",
+      "tags": ["web3", "metaverse", "decentralization"]
+    },
+    {
+      "id": "vid-1m-005",
+      "channelId": "1metaverse",
+      "title": "Building for the Spatial Web",
+      "description": "Practical guidance on developing applications for spatial computing platforms.",
+      "date": "2022-11-05",
+      "duration": "28:55",
+      "youtubeId": "",
+      "thumbnailUrl": "",
+      "tags": ["spatial web", "XR", "development"]
+    },
+    {
+      "id": "vid-1m-006",
+      "channelId": "1metaverse",
+      "title": "Metaverse Interop Show: Episode 1",
+      "description": "Inaugural episode introducing the show and its mission to promote open standards.",
+      "date": "2022-10-01",
+      "duration": "52:10",
+      "youtubeId": "",
+      "thumbnailUrl": "",
+      "tags": ["introduction", "metaverse", "OMI"]
+    }
+  ]
+}
