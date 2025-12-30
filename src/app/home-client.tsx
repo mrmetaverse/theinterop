@@ -103,7 +103,7 @@ export default function HomeClient({ featuredPost, latestPosts, categoryCounts }
       <main className="pt-20">
         {/* Masthead */}
         <div className="border-b-2 border-foreground">
-          <div className="mx-auto max-w-7xl px-4 py-8 text-center">
+          <div className="container-editorial py-8 text-center">
             <h1 className="font-display text-5xl md:text-6xl font-bold tracking-tight">
               The Interop
             </h1>
@@ -117,7 +117,7 @@ export default function HomeClient({ featuredPost, latestPosts, categoryCounts }
         </div>
 
         {/* Main Content Grid */}
-        <div className="mx-auto max-w-7xl px-4 py-8">
+        <div className="container-editorial py-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
             
             {/* Main Column */}
@@ -201,7 +201,7 @@ export default function HomeClient({ featuredPost, latestPosts, categoryCounts }
 
         {/* Bottom Section - About */}
         <div className="border-t-2 border-foreground">
-          <div className="mx-auto max-w-7xl px-4 py-12">
+          <div className="container-editorial py-12">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
               <div>
                 <h2 className="section-header">About The Interop</h2>
