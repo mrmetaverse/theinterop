@@ -2,54 +2,60 @@ import { MetadataRoute } from 'next';
 import { getAllPostsMeta, getAllTags } from '@/lib/posts';
 import { siteConfig, CATEGORIES, Category } from '@/lib/types';
 
+// Get today's date in YYYY-MM-DD format for static pages
+function getTodayDate(): string {
+  return new Date().toISOString().split('T')[0];
+}
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = siteConfig.url;
   const posts = getAllPostsMeta();
   const allTags = getAllTags();
+  const today = getTodayDate();
 
   // Static pages
   const staticPages: MetadataRoute.Sitemap = [
     {
       url: baseUrl,
-      lastModified: new Date(),
+      lastModified: today,
       changeFrequency: 'weekly',
       priority: 1,
     },
     {
       url: `${baseUrl}/blog`,
-      lastModified: new Date(),
+      lastModified: today,
       changeFrequency: 'daily',
       priority: 0.9,
     },
     {
       url: `${baseUrl}/categories`,
-      lastModified: new Date(),
+      lastModified: today,
       changeFrequency: 'weekly',
       priority: 0.8,
     },
     {
       url: `${baseUrl}/about`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/subscribe`,
-      lastModified: new Date(),
+      lastModified: today,
       changeFrequency: 'monthly',
       priority: 0.7,
     },
     {
       url: `${baseUrl}/media`,
-      lastModified: new Date(),
+      lastModified: today,
       changeFrequency: 'weekly',
-      priority: 0.8,
+      priority: 0.7,
     },
     {
       url: `${baseUrl}/press`,
-      lastModified: new Date(),
+      lastModified: today,
       changeFrequency: 'monthly',
-      priority: 0.7,
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/llms.txt`,
+      lastModified: today,
+      changeFrequency: 'weekly',
+      priority: 0.3,
     },
   ];
 
@@ -57,15 +63,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const categories = Object.keys(CATEGORIES) as Category[];
   const categoryPages: MetadataRoute.Sitemap = categories.map((category) => ({
     url: `${baseUrl}/categories/${category}`,
-    lastModified: new Date(),
+    lastModified: today,
     changeFrequency: 'weekly' as const,
     priority: 0.7,
   }));
 
-  // Blog posts
+  // Blog posts - these are the most important for SEO
   const postPages: MetadataRoute.Sitemap = posts.map((post) => ({
     url: `${baseUrl}/blog/${post.slug}`,
-    lastModified: new Date(post.date),
+    lastModified: post.date, // Already in YYYY-MM-DD format
     changeFrequency: 'monthly' as const,
     priority: 0.8,
   }));
@@ -73,7 +79,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // Tag pages
   const tagPages: MetadataRoute.Sitemap = allTags.map((tag) => ({
     url: `${baseUrl}/tags/${encodeURIComponent(tag)}`,
-    lastModified: new Date(),
+    lastModified: today,
     changeFrequency: 'weekly' as const,
     priority: 0.5,
   }));

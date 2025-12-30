@@ -9,6 +9,7 @@ export default function robots(): MetadataRoute.Robots {
         allow: '/',
         disallow: ['/api/', '/_next/', '/private/'],
       },
+      // OpenAI
       {
         userAgent: 'GPTBot',
         allow: '/',
@@ -17,12 +18,73 @@ export default function robots(): MetadataRoute.Robots {
         userAgent: 'ChatGPT-User',
         allow: '/',
       },
+      // Anthropic
       {
         userAgent: 'Claude-Web',
         allow: '/',
       },
       {
+        userAgent: 'ClaudeBot',
+        allow: '/',
+      },
+      {
+        userAgent: 'anthropic-ai',
+        allow: '/',
+      },
+      // Google (Search + Gemini)
+      {
         userAgent: 'Googlebot',
+        allow: '/',
+      },
+      {
+        userAgent: 'Google-Extended',
+        allow: '/',
+      },
+      {
+        userAgent: 'Googlebot-Image',
+        allow: '/',
+      },
+      // Perplexity
+      {
+        userAgent: 'PerplexityBot',
+        allow: '/',
+      },
+      // Cohere
+      {
+        userAgent: 'cohere-ai',
+        allow: '/',
+      },
+      // Meta
+      {
+        userAgent: 'FacebookBot',
+        allow: '/',
+      },
+      {
+        userAgent: 'meta-externalagent',
+        allow: '/',
+      },
+      // Microsoft/Bing (powers some AI)
+      {
+        userAgent: 'bingbot',
+        allow: '/',
+      },
+      // Apple
+      {
+        userAgent: 'Applebot',
+        allow: '/',
+      },
+      {
+        userAgent: 'Applebot-Extended',
+        allow: '/',
+      },
+      // You.com
+      {
+        userAgent: 'YouBot',
+        allow: '/',
+      },
+      // Common crawlers used for AI training
+      {
+        userAgent: 'CCBot',
         allow: '/',
       },
     ],
