@@ -26,6 +26,15 @@ interface PressItem {
 }
 
 const pressItems: PressItem[] = [
+  // 2025+
+  {
+    title: 'Google DeepMind AI Research Foundations - 5-Week Winter Study Group',
+    publication: 'GDG Annapolis',
+    date: '2026-01-15',
+    url: 'https://gdg.community.dev/events/details/google-gdg-annapolis-presents-google-deepmind-ai-research-foundations-a-5-week-winter-study-group-2026-01-15/',
+    excerpt: 'Co-organizing a 5-week study group on Google DeepMind AI research foundations for the Annapolis developer community.',
+    featured: true,
+  },
   {
     title: 'TEDCO Announces Panel Discussion on Unlocking AI Strategy at 2025 Entrepreneur Expo',
     publication: 'TEDCO Maryland',
@@ -34,6 +43,76 @@ const pressItems: PressItem[] = [
     excerpt: 'Jesse Alton, Virgent AI, joins the "AI Strategy Unlocked!" panel at TEDCO\'s 2025 Entrepreneur Expo to share real-world strategies for leveraging AI in business—from concept to scale.',
     featured: true,
   },
+  {
+    title: 'Virgent AI: Move Beyond AI-Curious to AI-Powered',
+    publication: 'Innovations of the World',
+    date: '2025-06-01',
+    url: 'https://innovationsoftheworld.com/virgent-ai-move-beyond-ai-curious-to-ai-powered/',
+    excerpt: 'Profile of Virgent AI and its mission to help organizations move from AI-curious to AI-powered through practical implementation.',
+    featured: true,
+  },
+  {
+    title: 'Take AI Seriously or Risk Being Left Behind',
+    publication: 'The AI CEO Podcast (iHeart)',
+    date: '2025-03-01',
+    url: 'https://www.iheart.com/podcast/263-the-ai-ceo-with-seema-alex-112672379/episode/take-ai-seriously-or-risk-being-270326630/',
+    excerpt: 'Jesse Alton joins Seema Alexander on The AI CEO podcast to discuss why businesses must take AI seriously or risk being left behind.',
+    featured: true,
+  },
+  {
+    title: 'MTC CRC Emerging Industries Forum: MedTech and the Future of Medicine',
+    publication: 'Maryland Tech Council',
+    date: '2025-01-15',
+    url: 'https://members.mdtechcouncil.com/calendar/Details/mtc-crc-emerging-industries-forum-medtech-and-the-future-of-medicine-and-how-it-fits-into-our-innovation-system-900580?sourceTypeId=Website',
+    excerpt: 'Participating in the MTC Chesapeake Regional Chapter forum on emerging industries and the future of medicine in Maryland\'s innovation system.',
+  },
+  {
+    title: 'Welcome to GDG Annapolis',
+    publication: 'GDG Annapolis',
+    date: '2024-12-01',
+    url: 'https://gdg.community.dev/events/details/google-gdg-annapolis-presents-welcome-to-gdg-annapolis/',
+    excerpt: 'Launch event for Google Developer Group Annapolis, bringing together local developers to build community around Google technologies.',
+  },
+  // 2022-2023 - Metaverse Era
+  {
+    title: 'OMI Elects New Chairs',
+    publication: 'Open Metaverse Interoperability Group',
+    date: '2022-09-01',
+    url: 'https://omigroup.org/omi-elects-new-chairs/',
+    excerpt: 'Jesse Alton elected as Co-chair of the Open Metaverse Interoperability Group, leading efforts to establish open standards for virtual worlds.',
+  },
+  {
+    title: 'Magick ML - No-Code AI Development Environment',
+    publication: 'Automate and Tweak',
+    date: '2023-06-01',
+    url: 'https://automateandtweak.com/tool/magickml/',
+    excerpt: 'Feature on Magick ML, the open-source no-code visual node-graph AI development environment founded by Jesse Alton.',
+  },
+  // 2021 - CNN Metaverse
+  {
+    title: 'The Metaverse Has Arrived. Here\'s What That Actually Means',
+    publication: 'CNN',
+    date: '2021-08-08',
+    url: 'https://www.cnn.com/2021/08/08/tech/metaverse-explainer/',
+    excerpt: 'Contributing expert perspective on the emerging metaverse and what it means for the future of virtual worlds and digital interaction.',
+    featured: true,
+  },
+  // Educational
+  {
+    title: 'Jesse Alton - MICA Art Articles',
+    publication: 'Maryland Institute College of Art',
+    date: '2020-01-15',
+    url: 'https://www.mica.edu/art-articles/details/jesse-alton/',
+    excerpt: 'Profile and articles featuring Jesse Alton\'s work at the intersection of technology and creativity at MICA.',
+  },
+  {
+    title: 'To The Verge - Interview',
+    publication: 'To The Verge (YouTube)',
+    date: '2019-06-01',
+    url: 'https://www.youtube.com/watch?v=0Q1QWQdIEtg',
+    excerpt: 'Video interview discussing emerging technology, entrepreneurship, and the future of immersive experiences.',
+  },
+  // 2014 - Early Press
   {
     title: 'Advice from local entrepreneurs: Be prepared to make a switch, lose money',
     publication: 'Capital Gazette',

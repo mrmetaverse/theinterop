@@ -11,6 +11,7 @@ const footerLinks = {
     { href: '/categories/case-studies', label: 'Case Studies' },
   ],
   connect: [
+    { href: 'https://virgent.ai', label: 'Get AI Help', external: true },
     { href: '/about', label: 'About' },
     { href: '/press', label: 'Press' },
     { href: '/subscribe', label: 'Subscribe' },
@@ -78,12 +79,23 @@ export default function Footer() {
             <ul className="space-y-2">
               {footerLinks.connect.map((link) => (
                 <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-foreground-muted hover:text-foreground transition-colors"
-                  >
-                    {link.label}
-                  </Link>
+                  {'external' in link && link.external ? (
+                    <a
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-accent-primary hover:text-foreground transition-colors font-medium"
+                    >
+                      {link.label}
+                    </a>
+                  ) : (
+                    <Link
+                      href={link.href}
+                      className="text-foreground-muted hover:text-foreground transition-colors"
+                    >
+                      {link.label}
+                    </Link>
+                  )}
                 </li>
               ))}
             </ul>

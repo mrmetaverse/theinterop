@@ -27,8 +27,9 @@ const companies = [
   {
     name: 'Virgent AI',
     role: 'Co-founder & CEO',
-    description: 'Full-service AI development agency helping organizations implement AI solutions that actually ship.',
+    description: 'Full-service AI development agency helping organizations implement AI solutions that actually ship. Need AI help? Start here.',
     url: 'https://virgent.ai',
+    highlight: true,
   },
   {
     name: 'AltonTech Inc.',
@@ -36,17 +37,53 @@ const companies = [
     description: 'Product development, sales, and AI enablement with 100+ successful commercial and government projects.',
     url: 'https://alton.tech',
   },
+];
+
+const previousWork = [
   {
     name: 'Magick ML',
-    role: 'Founder',
+    role: 'Founder (Previous)',
     description: 'Open-source no-code visual node-graph AI Development Environment for building, deploying, and scaling AI agents.',
     url: 'https://magickml.com',
   },
   {
     name: 'OMI Group',
-    role: 'Co-chair',
+    role: 'Co-chair (Previous)',
     description: 'Open Metaverse Interoperability Group promoting open standards and interoperability across virtual worlds.',
     url: 'https://omigroup.org',
+  },
+];
+
+const volunteerWork = [
+  {
+    name: 'Maryland Tech Council (MTC)',
+    role: 'Chesapeake Regional Chapter',
+    description: 'Co-creator of the Chesapitch and Hackathon series, helping foster innovation in the Maryland tech ecosystem.',
+    url: 'https://members.mdtechcouncil.com',
+  },
+  {
+    name: 'TEDCO',
+    role: 'LENA Executive Network Advisor',
+    description: 'Active advisor in TEDCO\'s Leadership, Education, Networking & Accountability program supporting Maryland entrepreneurs.',
+    url: 'https://www.tedcomd.com',
+  },
+  {
+    name: 'GDG Annapolis',
+    role: 'Co-organizer & Contributor',
+    description: 'Google Developer Group Annapolis - building community around Google technologies and developer education.',
+    url: 'https://gdg.community.dev/gdg-annapolis/',
+  },
+  {
+    name: 'UMD Blockchain Accelerator',
+    role: 'Mentor',
+    description: 'Supporting early-stage blockchain and Web3 ventures at the University of Maryland.',
+    url: 'https://www.umd.edu',
+  },
+  {
+    name: 'AACC',
+    role: 'Former Ratcliffe Scholar',
+    description: 'Supporting various entrepreneurship events annually at Anne Arundel Community College.',
+    url: 'https://www.aacc.edu',
   },
 ];
 
@@ -187,7 +224,7 @@ export default function AboutPage() {
             </p>
           </section>
 
-          {/* Companies */}
+          {/* Current Work */}
           <section className="mb-12">
             <h2 className="text-2xl font-display font-semibold text-foreground mb-6">
               Current Work
@@ -199,7 +236,7 @@ export default function AboutPage() {
                   href={company.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="neu-card group"
+                  className={`neu-card group ${'highlight' in company && company.highlight ? 'ring-2 ring-accent-primary' : ''}`}
                 >
                   <div className="flex items-start justify-between">
                     <div>
@@ -207,6 +244,62 @@ export default function AboutPage() {
                         {company.name}
                       </h3>
                       <p className="text-sm text-accent-primary">{company.role}</p>
+                    </div>
+                    <ExternalLink className="w-5 h-5 text-foreground-muted group-hover:text-accent-primary transition-colors" />
+                  </div>
+                  <p className="mt-3 text-foreground-muted text-sm">{company.description}</p>
+                </a>
+              ))}
+            </div>
+          </section>
+
+          {/* Community & Volunteering */}
+          <section className="mb-12">
+            <h2 className="text-2xl font-display font-semibold text-foreground mb-4">
+              Community & Volunteering
+            </h2>
+            <p className="text-foreground-muted mb-6">
+              I take great pride in the Maryland tech ecosystem and volunteer regularly with organizations that support entrepreneurs and developers.
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {volunteerWork.map((org) => (
+                <a
+                  key={org.name}
+                  href={org.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="neu-card-sm group p-4"
+                >
+                  <h3 className="font-display font-semibold text-foreground group-hover:text-accent-primary transition-colors text-sm">
+                    {org.name}
+                  </h3>
+                  <p className="text-xs text-accent-primary mt-1">{org.role}</p>
+                  <p className="mt-2 text-foreground-muted text-xs">{org.description}</p>
+                </a>
+              ))}
+            </div>
+          </section>
+
+          {/* Previous Startups */}
+          <section className="mb-12">
+            <h2 className="text-2xl font-display font-semibold text-foreground mb-6">
+              Previous Startups
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {previousWork.map((company) => (
+                <a
+                  key={company.name}
+                  href={company.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="neu-card group opacity-80 hover:opacity-100 transition-opacity"
+                >
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <h3 className="font-display font-semibold text-foreground group-hover:text-accent-primary transition-colors">
+                        {company.name}
+                      </h3>
+                      <p className="text-sm text-foreground-muted">{company.role}</p>
                     </div>
                     <ExternalLink className="w-5 h-5 text-foreground-muted group-hover:text-accent-primary transition-colors" />
                   </div>
