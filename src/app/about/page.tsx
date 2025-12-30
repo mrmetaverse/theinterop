@@ -6,12 +6,24 @@ import Footer from '@/components/layout/Footer';
 import { siteConfig } from '@/lib/types';
 
 export const metadata: Metadata = {
-  title: 'About',
-  description: 'Learn about The Interop and Jesse Alton - founder, AI strategist, and builder at the intersection of AI and business transformation.',
+  title: 'About Jesse Alton',
+  description: 'Jesse Alton is the founder of Virgent AI and AltonTech, specializing in AI strategy, agent development, and business transformation. Based in Maryland, serving the DMV area and beyond.',
+  keywords: ['Jesse Alton', 'AI consultant', 'Virgent AI', 'AltonTech', 'Maryland AI', 'AI strategy', 'AI implementation'],
   openGraph: {
-    title: `About | ${siteConfig.name}`,
-    description: 'Learn about The Interop and Jesse Alton.',
+    title: 'About Jesse Alton | The Interop',
+    description: 'Founder of Virgent AI and AltonTech. AI strategist, agent developer, and entrepreneur helping businesses implement AI that ships.',
     url: `${siteConfig.url}/about`,
+    type: 'profile',
+    images: [{ url: `${siteConfig.url}/images/logo.png`, width: 400, height: 400, alt: 'Jesse Alton' }],
+  },
+  twitter: {
+    card: 'summary',
+    title: 'About Jesse Alton',
+    description: 'AI strategist, founder of Virgent AI, and builder of production AI systems.',
+    images: [`${siteConfig.url}/images/logo.png`],
+  },
+  alternates: {
+    canonical: `${siteConfig.url}/about`,
   },
 };
 

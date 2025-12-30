@@ -32,27 +32,77 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     };
   }
 
+  const postUrl = absoluteUrl(`/blog/${post.slug}`);
+  const imageUrl = post.coverImage || siteConfig.ogImage;
+
   return {
     title: post.title,
     description: post.excerpt,
-    authors: [{ name: siteConfig.author.name }],
+    authors: [{ name: siteConfig.author.name, url: 'https://alton.tech' }],
+    keywords: post.tags,
     openGraph: {
       title: post.title,
       description: post.excerpt,
       type: 'article',
       publishedTime: post.date,
+      modifiedTime: post.updatedDate || post.date,
       authors: [siteConfig.author.name],
-      url: absoluteUrl(`/blog/${post.slug}`),
-      images: post.coverImage
-        ? [{ url: post.coverImage, width: 1200, height: 630 }]
-        : [{ url: siteConfig.ogImage, width: 1200, height: 630 }],
+      url: postUrl,
+      section: CATEGORIES[post.category]?.label,
+      tags: post.tags,
+      images: [{ url: imageUrl, width: 1200, height: 630, alt: post.title }],
     },
     twitter: {
       card: 'summary_large_image',
       title: post.title,
       description: post.excerpt,
-      images: post.coverImage ? [post.coverImage] : [siteConfig.ogImage],
+      images: [imageUrl],
+      creator: siteConfig.author.twitter,
     },
+    alternates: {
+      canonical: postUrl,
+    },
+  };
+}
+
+// Generate Article JSON-LD for blog posts
+function generateArticleJsonLd(post: ReturnType<typeof getPostBySlug>) {
+  if (!post) return null;
+  
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: post.title,
+    description: post.excerpt,
+    image: post.coverImage || siteConfig.ogImage,
+    datePublished: post.date,
+    dateModified: post.updatedDate || post.date,
+    author: {
+      '@type': 'Person',
+      name: siteConfig.author.name,
+      url: 'https://alton.tech',
+      sameAs: [
+        siteConfig.links.twitter,
+        siteConfig.links.linkedin,
+        'https://virgent.ai',
+      ],
+    },
+    publisher: {
+      '@type': 'Person',
+      name: siteConfig.author.name,
+      url: siteConfig.url,
+      logo: {
+        '@type': 'ImageObject',
+        url: `${siteConfig.url}/images/logo.png`,
+      },
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': absoluteUrl(`/blog/${post.slug}`),
+    },
+    keywords: post.tags?.join(', '),
+    articleSection: CATEGORIES[post.category]?.label,
+    wordCount: post.content.split(/\s+/).length,
   };
 }
 
@@ -72,8 +122,19 @@ export default async function PostPage({ params }: PageProps) {
   // Convert markdown content to HTML
   const htmlContent = await markdownToHtml(post.content);
 
+  // Generate JSON-LD for this article
+  const articleJsonLd = generateArticleJsonLd(post);
+
   return (
     <>
+      {/* Article JSON-LD */}
+      {articleJsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+        />
+      )}
+      
       <Header />
 
       <article className="pt-24 pb-20">

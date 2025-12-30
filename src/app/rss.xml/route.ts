@@ -1,6 +1,6 @@
 import { Feed } from 'feed';
 import { getAllPostsMeta } from '@/lib/posts';
-import { siteConfig } from '@/lib/types';
+import { siteConfig, CATEGORIES } from '@/lib/types';
 
 export async function GET() {
   const feed = new Feed({
@@ -10,36 +10,47 @@ export async function GET() {
     link: siteConfig.url,
     language: 'en',
     image: siteConfig.ogImage,
-    favicon: `${siteConfig.url}/favicon.ico`,
-    copyright: `© ${new Date().getFullYear()} ${siteConfig.author.name}`,
+    favicon: `${siteConfig.url}/images/logo.png`,
+    copyright: `© ${new Date().getFullYear()} ${siteConfig.author.name}. All rights reserved.`,
     updated: new Date(),
+    generator: 'The Interop by Jesse Alton',
     feedLinks: {
       rss2: `${siteConfig.url}/rss.xml`,
     },
     author: {
       name: siteConfig.author.name,
       email: siteConfig.author.email,
-      link: siteConfig.url,
+      link: 'https://alton.tech',
     },
   });
 
   const posts = getAllPostsMeta();
 
   posts.forEach((post) => {
+    const categoryLabel = CATEGORIES[post.category]?.label || post.category;
+    const categories = [{ name: categoryLabel }];
+    
+    // Add tags as categories
+    if (post.tags && post.tags.length > 0) {
+      post.tags.forEach((tag) => categories.push({ name: tag }));
+    }
+
     feed.addItem({
       title: post.title,
       id: `${siteConfig.url}/blog/${post.slug}`,
       link: `${siteConfig.url}/blog/${post.slug}`,
       description: post.excerpt,
+      content: post.excerpt, // RSS readers show this in preview
       date: new Date(post.date),
+      image: post.coverImage || siteConfig.ogImage,
       author: [
         {
           name: siteConfig.author.name,
           email: siteConfig.author.email,
-          link: siteConfig.url,
+          link: 'https://alton.tech',
         },
       ],
-      category: [{ name: post.category }],
+      category: categories,
     });
   });
 

@@ -7,12 +7,17 @@ import { getAllPostsMeta } from '@/lib/posts';
 import { siteConfig, Category, CATEGORIES } from '@/lib/types';
 
 export const metadata: Metadata = {
-  title: 'Blog',
-  description: 'Explore all posts on AI strategy, business transformation, agent development, and emerging technology.',
+  title: 'Blog | AI Strategy & Agent Development Articles',
+  description: 'Articles on AI strategy, AI agents, LangChain, business transformation, and emerging technology by Jesse Alton. Practical insights for building production AI systems.',
+  keywords: ['AI blog', 'AI strategy articles', 'agent development', 'LangChain tutorials', 'AI implementation', 'business AI'],
   openGraph: {
-    title: `Blog | ${siteConfig.name}`,
-    description: 'Explore all posts on AI strategy, business transformation, agent development, and emerging technology.',
+    title: 'Blog | The Interop by Jesse Alton',
+    description: 'Explore articles on AI strategy, agent development, and business transformation. Weekly insights for founders and builders.',
     url: `${siteConfig.url}/blog`,
+    type: 'website',
+  },
+  alternates: {
+    canonical: `${siteConfig.url}/blog`,
   },
 };
 

@@ -6,12 +6,17 @@ import { getPostCountByCategory } from '@/lib/posts';
 import { siteConfig, Category, CATEGORIES } from '@/lib/types';
 
 export const metadata: Metadata = {
-  title: 'Categories',
-  description: 'Browse articles by category: AI Strategy, Business Transformation, Agent Development, Future Tech, and Case Studies.',
+  title: 'Categories | AI Topics & Business Transformation',
+  description: 'Browse AI articles by topic: AI Strategy, Agent Development, Business Transformation, Case Studies, and Future Tech. Expert insights from Jesse Alton.',
+  keywords: ['AI categories', 'AI strategy', 'agent development', 'business transformation', 'case studies', 'AI topics'],
   openGraph: {
-    title: `Categories | ${siteConfig.name}`,
-    description: 'Browse articles by category.',
+    title: 'Categories | The Interop by Jesse Alton',
+    description: 'Explore AI content organized by topic - from strategic frameworks to hands-on implementation guides.',
     url: `${siteConfig.url}/categories`,
+    type: 'website',
+  },
+  alternates: {
+    canonical: `${siteConfig.url}/categories`,
   },
 };
 

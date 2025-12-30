@@ -6,12 +6,17 @@ import Footer from '@/components/layout/Footer';
 import { siteConfig } from '@/lib/types';
 
 export const metadata: Metadata = {
-  title: 'Press',
-  description: 'Press coverage and media mentions featuring Jesse Alton - entrepreneur, AI strategist, and founder.',
+  title: 'Press & Media Coverage | Jesse Alton',
+  description: 'Press coverage, interviews, and media mentions featuring Jesse Alton - founder of Virgent AI, AI strategist, and entrepreneur. Featured in CNN, Capital Gazette, iHeart Radio, and more.',
+  keywords: ['Jesse Alton press', 'AI founder interviews', 'Virgent AI', 'Maryland entrepreneur', 'tech press'],
   openGraph: {
-    title: `Press | ${siteConfig.name}`,
-    description: 'Press coverage and media mentions featuring Jesse Alton.',
+    title: 'Press & Media Coverage | The Interop by Jesse Alton',
+    description: 'Press coverage and media mentions featuring Jesse Alton - AI strategist and founder of Virgent AI.',
     url: `${siteConfig.url}/press`,
+    type: 'website',
+  },
+  alternates: {
+    canonical: `${siteConfig.url}/press`,
   },
 };
 

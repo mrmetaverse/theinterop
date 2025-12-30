@@ -35,14 +35,19 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 
   const category = CATEGORIES[categorySlug as Category];
+  const categoryUrl = `${siteConfig.url}/categories/${categorySlug}`;
 
   return {
-    title: category.label,
-    description: category.description,
+    title: `${category.label} | AI Articles by Jesse Alton`,
+    description: `${category.description} Expert insights and practical guides from Jesse Alton on The Interop.`,
     openGraph: {
-      title: `${category.label} | ${siteConfig.name}`,
+      title: `${category.label} | The Interop by Jesse Alton`,
       description: category.description,
-      url: `${siteConfig.url}/categories/${categorySlug}`,
+      url: categoryUrl,
+      type: 'website',
+    },
+    alternates: {
+      canonical: categoryUrl,
     },
   };
 }

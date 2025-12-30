@@ -119,9 +119,9 @@ export interface SiteConfig {
 
 export const siteConfig: SiteConfig = {
   name: 'The Interop by Jesse Alton',
-  description: 'Content for Builders, Founders, and Funders. Weekly insights at the intersection of AI, business transformation, and emerging technology.',
+  description: 'AI strategy, agent development, and business transformation insights from Jesse Alton. Practical guides for founders, executives, and builders implementing AI in production.',
   url: 'https://jessealton.com',
-  ogImage: 'https://jessealton.com/og.png',
+  ogImage: 'https://jessealton.com/images/logo.png',
   links: {
     twitter: 'https://twitter.com/mrmetaverse',
     github: 'https://github.com/mrmetaverse',

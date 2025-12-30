@@ -8,12 +8,17 @@ import { SubscribeStatus } from './subscribe-client';
 import { siteConfig } from '@/lib/types';
 
 export const metadata: Metadata = {
-  title: 'Subscribe',
-  description: 'Subscribe to The Interop for weekly insights on AI strategy, agent development, and emerging technology.',
+  title: 'Subscribe | AI Newsletter',
+  description: 'Subscribe to The Interop newsletter for weekly insights on AI strategy, agent development, and emerging technology from Jesse Alton. Join founders and builders implementing AI.',
+  keywords: ['AI newsletter', 'AI strategy newsletter', 'Jesse Alton newsletter', 'AI updates'],
   openGraph: {
-    title: `Subscribe | ${siteConfig.name}`,
-    description: 'Subscribe for weekly insights on AI strategy, agent development, and emerging technology.',
+    title: 'Subscribe | The Interop by Jesse Alton',
+    description: 'Weekly insights on AI strategy, agent development, and emerging technology for founders and builders.',
     url: `${siteConfig.url}/subscribe`,
+    type: 'website',
+  },
+  alternates: {
+    canonical: `${siteConfig.url}/subscribe`,
   },
 };
 

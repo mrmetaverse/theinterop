@@ -13,11 +13,17 @@ import {
 import { siteConfig } from '@/lib/types';
 
 export const metadata: Metadata = {
-  title: 'Media',
-  description: 'Videos from Jesse Alton on AI, the metaverse, and emerging technology.',
+  title: 'Media | Videos & Podcasts on AI',
+  description: 'Watch videos and listen to podcasts from Jesse Alton on AI strategy, the metaverse, emerging technology, and building AI agents.',
+  keywords: ['Jesse Alton videos', 'AI podcasts', 'metaverse videos', 'AI strategy videos', 'tech talks'],
   openGraph: {
-    title: 'Media | The Interop',
-    description: 'Videos from Jesse Alton on AI, the metaverse, and emerging technology.',
+    title: 'Media | The Interop by Jesse Alton',
+    description: 'Videos and podcasts on AI strategy, the metaverse, and emerging technology from Jesse Alton.',
+    url: `${siteConfig.url}/media`,
+    type: 'website',
+  },
+  alternates: {
+    canonical: `${siteConfig.url}/media`,
   },
 };
 
