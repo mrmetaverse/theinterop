@@ -1,24 +1,63 @@
 'use client';
 
-import { Suspense, useRef, useMemo, useState, useEffect } from 'react';
+import { Suspense, useRef, useMemo, useState, useEffect, useCallback } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Float, Sphere, MeshDistortMaterial, Environment, Stars } from '@react-three/drei';
+import { Float, Sphere, MeshDistortMaterial, Environment, Stars, OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
 
 // Animated node representing an "interop" connection point
-function InteropNode({ position, color, scale = 1 }: { position: [number, number, number]; color: string; scale?: number }) {
+function InteropNode({ 
+  position, 
+  color, 
+  scale = 1,
+  onFlash 
+}: { 
+  position: [number, number, number]; 
+  color: string; 
+  scale?: number;
+  onFlash?: () => void;
+}) {
   const meshRef = useRef<THREE.Mesh>(null);
+  const [isFlashing, setIsFlashing] = useState(false);
+  const [flashIntensity, setFlashIntensity] = useState(0);
   
-  useFrame((state) => {
+  useFrame((state, delta) => {
     if (meshRef.current) {
       meshRef.current.rotation.x = state.clock.elapsedTime * 0.2;
       meshRef.current.rotation.y = state.clock.elapsedTime * 0.3;
+      
+      // Handle flash animation
+      if (isFlashing) {
+        setFlashIntensity((prev) => {
+          const newIntensity = prev - delta * 3;
+          if (newIntensity <= 0) {
+            setIsFlashing(false);
+            return 0;
+          }
+          return newIntensity;
+        });
+      }
     }
   });
 
+  const handleClick = useCallback((e: { stopPropagation: () => void }) => {
+    e.stopPropagation();
+    setIsFlashing(true);
+    setFlashIntensity(1);
+    onFlash?.();
+  }, [onFlash]);
+
+  // Calculate emissive color based on flash intensity
+  const emissiveColor = useMemo(() => new THREE.Color(color), [color]);
+
   return (
     <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
-      <Sphere ref={meshRef} args={[0.5 * scale, 32, 32]} position={position}>
+      <Sphere 
+        ref={meshRef} 
+        args={[0.5 * scale, 32, 32]} 
+        position={position}
+        onClick={handleClick}
+      >
         <MeshDistortMaterial
           color={color}
           attach="material"
@@ -26,8 +65,20 @@ function InteropNode({ position, color, scale = 1 }: { position: [number, number
           speed={2}
           roughness={0.2}
           metalness={0.8}
+          emissive={emissiveColor}
+          emissiveIntensity={flashIntensity * 2}
         />
       </Sphere>
+      {/* Flash light effect */}
+      {isFlashing && (
+        <pointLight
+          position={position}
+          color={color}
+          intensity={flashIntensity * 5}
+          distance={3}
+          decay={2}
+        />
+      )}
     </Float>
   );
 }
@@ -133,8 +184,25 @@ function Scene() {
     '#d946ef',
   ];
 
+  // Stable scales - computed once per node
+  const scales = useMemo(
+    () => nodes.map(() => 0.6 + Math.random() * 0.4),
+    [nodes]
+  );
+
   return (
     <>
+      {/* Orbit controls for drag rotation */}
+      <OrbitControls
+        enableZoom={false}
+        enablePan={false}
+        rotateSpeed={0.5}
+        autoRotate
+        autoRotateSpeed={0.3}
+        minPolarAngle={Math.PI / 4}
+        maxPolarAngle={Math.PI - Math.PI / 4}
+      />
+      
       <ambientLight intensity={0.5} />
       <pointLight position={[10, 10, 10]} intensity={1} />
       <pointLight position={[-10, -10, -5]} intensity={0.5} color="#8b5cf6" />
@@ -148,7 +216,7 @@ function Scene() {
           key={i}
           position={pos}
           color={colors[i]}
-          scale={0.6 + Math.random() * 0.4}
+          scale={scales[i]}
         />
       ))}
       
