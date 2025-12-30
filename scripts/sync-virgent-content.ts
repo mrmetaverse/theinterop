@@ -353,28 +353,19 @@ function updateMdxFile(filePath: string, caseStudy: typeof CASE_STUDIES[string])
   const content = fs.readFileSync(filePath, 'utf8');
   const { data } = matter(content);
   
-  // Keep existing frontmatter but update what we have
-  const newFrontmatter = {
-    ...data,
-    title: caseStudy.title,
-    date: caseStudy.date,
-    excerpt: caseStudy.excerpt,
-    tags: caseStudy.tags,
-  };
-  
   // Build new file content
   const newContent = `---
-title: "${newFrontmatter.title}"
-date: "${newFrontmatter.date}"
-slug: "${newFrontmatter.slug || data.slug}"
-excerpt: "${newFrontmatter.excerpt}"
-category: "${newFrontmatter.category || 'case-studies'}"
-tags: ${JSON.stringify(newFrontmatter.tags)}
-coverImage: "${newFrontmatter.coverImage || ''}"
-featured: ${newFrontmatter.featured || false}
-draft: ${newFrontmatter.draft || false}
-originalSource: "${newFrontmatter.originalSource || 'virgent'}"
-canonicalUrl: "${newFrontmatter.canonicalUrl || ''}"
+title: "${caseStudy.title}"
+date: "${caseStudy.date}"
+slug: "${data.slug}"
+excerpt: "${caseStudy.excerpt}"
+category: "${data.category || 'case-studies'}"
+tags: ${JSON.stringify(caseStudy.tags)}
+coverImage: "${data.coverImage || ''}"
+featured: ${data.featured || false}
+draft: ${data.draft || false}
+originalSource: "${data.originalSource || 'virgent'}"
+canonicalUrl: "${data.canonicalUrl || ''}"
 ---
 
 ${caseStudy.content}

@@ -76,7 +76,7 @@ function htmlToMarkdown(html: string): string {
   
   // Code
   md = md.replace(/<code[^>]*>(.*?)<\/code>/gi, '`$1`');
-  md = md.replace(/<pre[^>]*>(.*?)<\/pre>/gis, '```\n$1\n```\n\n');
+  md = md.replace(/<pre[^>]*>([\s\S]*?)<\/pre>/gi, '```\n$1\n```\n\n');
   
   // Line breaks
   md = md.replace(/<br\s*\/?>/gi, '\n');
