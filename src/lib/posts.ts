@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
 import readingTime from 'reading-time';
-import { Post, PostMeta, Category, VALID_CATEGORIES } from './types';
+import { Post, PostMeta, Category, VALID_CATEGORIES, OriginalSource } from './types';
 import { db, posts as postsTable } from './db';
 import { eq, desc, isNull, or } from 'drizzle-orm';
 
@@ -131,7 +131,7 @@ function dbPostToPost(dbPost: typeof postsTable.$inferSelect): Post {
     coverImage: dbPost.coverImage || undefined,
     featured: dbPost.featured || false,
     draft: dbPost.draft || false,
-    originalSource: dbPost.originalSource || undefined,
+    originalSource: (dbPost.originalSource as OriginalSource) || undefined,
     canonicalUrl: dbPost.canonicalUrl || undefined,
     updatedDate: dbPost.updatedDate ? formatDate(dbPost.updatedDate) : undefined,
     content: dbPost.content,
