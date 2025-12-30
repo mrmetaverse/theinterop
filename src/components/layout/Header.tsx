@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Menu, X, Moon, Sun, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -54,10 +55,19 @@ export default function Header({ onToggleVisuals, visualsEnabled = true }: Heade
           {/* Logo */}
           <Link
             href="/"
-            className="flex flex-col font-display text-foreground hover:text-accent-primary transition-colors"
+            className="flex items-center gap-3 font-display text-foreground hover:text-accent-primary transition-colors"
           >
-            <span className="text-xl font-bold text-gradient leading-tight">The Interop</span>
-            <span className="text-xs text-foreground-muted font-normal">with Jesse Alton</span>
+            <Image
+              src="/images/logo.png"
+              alt="The Interop Logo"
+              width={40}
+              height={40}
+              className="rounded-full"
+            />
+            <div className="flex flex-col">
+              <span className="text-xl font-bold text-gradient leading-tight">The Interop</span>
+              <span className="text-xs text-foreground-muted font-normal">with Jesse Alton</span>
+            </div>
           </Link>
 
           {/* Desktop Navigation */}

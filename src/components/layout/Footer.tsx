@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { Github, Linkedin, Rss, Youtube } from 'lucide-react';
 import { siteConfig } from '@/lib/types';
 
@@ -32,8 +33,17 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand */}
           <div className="md:col-span-2">
-            <Link href="/" className="text-2xl font-bold font-display text-gradient">
-              The Interop
+            <Link href="/" className="inline-flex items-center gap-3">
+              <Image
+                src="/images/logo.png"
+                alt="The Interop Logo"
+                width={48}
+                height={48}
+                className="rounded-full"
+              />
+              <span className="text-2xl font-bold font-display text-gradient">
+                The Interop
+              </span>
             </Link>
             <p className="mt-4 text-foreground-muted max-w-md">
               {siteConfig.description}
