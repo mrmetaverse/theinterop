@@ -12,8 +12,8 @@ interface HeaderProps {
 }
 
 const navItems = [
-  { href: '/blog', label: 'Blog' },
-  { href: '/categories', label: 'Categories' },
+  { href: '/blog', label: 'Articles' },
+  { href: '/categories', label: 'Topics' },
   { href: '/about', label: 'About' },
 ];
 
@@ -23,11 +23,9 @@ export default function Header({ onToggleVisuals, visualsEnabled = true }: Heade
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
-    // Check for dark mode preference
     const darkMode = document.documentElement.classList.contains('dark');
     setIsDark(darkMode);
 
-    // Handle scroll
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
     };
@@ -47,36 +45,40 @@ export default function Header({ onToggleVisuals, visualsEnabled = true }: Heade
     <header
       className={cn(
         'fixed top-0 left-0 right-0 z-40 transition-all duration-300',
-        isScrolled ? 'bg-background/80 backdrop-blur-lg shadow-neu-sm' : 'bg-transparent'
+        isScrolled ? 'bg-background/95 backdrop-blur-sm border-b border-border' : 'bg-transparent'
       )}
     >
-      <nav className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+      <nav className="container-editorial">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <Link
             href="/"
-            className="flex items-center gap-3 font-display text-foreground hover:text-accent-primary transition-colors"
+            className="flex items-center gap-3 group"
           >
             <Image
               src="/images/logo.png"
               alt="The Interop Logo"
-              width={40}
-              height={40}
+              width={36}
+              height={36}
               className="rounded-full"
             />
             <div className="flex flex-col">
-              <span className="text-xl font-bold text-gradient leading-tight">The Interop</span>
-              <span className="text-xs text-foreground-muted font-normal">with Jesse Alton</span>
+              <span className="font-display text-lg font-bold tracking-tight group-hover:text-foreground-muted transition-colors">
+                The Interop
+              </span>
+              <span className="text-[10px] uppercase tracking-widest text-foreground-subtle font-medium -mt-0.5">
+                Jesse Alton
+              </span>
             </div>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-1">
+          <div className="hidden md:flex items-center gap-8">
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className="px-4 py-2 rounded-lg text-foreground-muted hover:text-foreground hover:bg-card transition-all"
+                className="text-sm font-medium text-foreground-muted hover:text-foreground transition-colors uppercase tracking-wider"
               >
                 {item.label}
               </Link>
@@ -84,38 +86,46 @@ export default function Header({ onToggleVisuals, visualsEnabled = true }: Heade
           </div>
 
           {/* Right side actions */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             {/* Visuals Toggle */}
             {onToggleVisuals && (
               <button
                 onClick={onToggleVisuals}
                 className={cn(
-                  'p-2 rounded-lg transition-all',
+                  'p-2 transition-colors',
                   visualsEnabled
-                    ? 'text-accent-primary bg-card shadow-neu-sm'
-                    : 'text-foreground-muted hover:text-foreground'
+                    ? 'text-accent-gold'
+                    : 'text-foreground-subtle hover:text-foreground'
                 )}
-                title={visualsEnabled ? 'Disable 3D visuals' : 'Enable 3D visuals'}
-                aria-label={visualsEnabled ? 'Disable 3D visuals' : 'Enable 3D visuals'}
+                title={visualsEnabled ? 'Disable visuals' : 'Enable visuals'}
+                aria-label={visualsEnabled ? 'Disable visuals' : 'Enable visuals'}
               >
-                <Sparkles className="w-5 h-5" />
+                <Sparkles className="w-4 h-4" />
               </button>
             )}
 
             {/* Dark Mode Toggle */}
             <button
               onClick={toggleDarkMode}
-              className="p-2 rounded-lg text-foreground-muted hover:text-foreground hover:bg-card transition-all"
-              title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
-              aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+              className="p-2 text-foreground-subtle hover:text-foreground transition-colors"
+              title={isDark ? 'Light mode' : 'Dark mode'}
+              aria-label={isDark ? 'Light mode' : 'Dark mode'}
             >
-              {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+              {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
             </button>
+
+            {/* Subscribe button - desktop */}
+            <Link
+              href="/subscribe"
+              className="hidden md:inline-flex btn-secondary text-xs py-2 px-4"
+            >
+              Subscribe
+            </Link>
 
             {/* Mobile menu button */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="md:hidden p-2 rounded-lg text-foreground-muted hover:text-foreground hover:bg-card transition-all"
+              className="md:hidden p-2 text-foreground-subtle hover:text-foreground transition-colors"
               aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
             >
               {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -125,18 +135,25 @@ export default function Header({ onToggleVisuals, visualsEnabled = true }: Heade
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="md:hidden py-4 animate-fade-in-down">
-            <div className="neu-card-sm space-y-1">
+          <div className="md:hidden py-4 animate-fade-in-down border-t border-border">
+            <div className="space-y-1">
               {navItems.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
                   onClick={() => setIsMenuOpen(false)}
-                  className="block px-4 py-3 rounded-lg text-foreground-muted hover:text-foreground hover:bg-card-hover transition-all"
+                  className="block py-3 text-sm font-medium text-foreground-muted hover:text-foreground uppercase tracking-wider transition-colors"
                 >
                   {item.label}
                 </Link>
               ))}
+              <Link
+                href="/subscribe"
+                onClick={() => setIsMenuOpen(false)}
+                className="block py-3 text-sm font-medium text-accent-gold uppercase tracking-wider"
+              >
+                Subscribe
+              </Link>
             </div>
           </div>
         )}
@@ -144,4 +161,3 @@ export default function Header({ onToggleVisuals, visualsEnabled = true }: Heade
     </header>
   );
 }
-

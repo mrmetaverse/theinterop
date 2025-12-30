@@ -1,18 +1,16 @@
 import Link from 'next/link';
-import Image from 'next/image';
-import { Github, Linkedin, Rss, Youtube } from 'lucide-react';
+import { Github, Linkedin, Rss, Youtube, ExternalLink } from 'lucide-react';
 import { siteConfig } from '@/lib/types';
 
 const footerLinks = {
   content: [
-    { href: '/blog', label: 'Blog' },
+    { href: '/blog', label: 'All Articles' },
     { href: '/categories/ai-strategy', label: 'AI Strategy' },
     { href: '/categories/agent-development', label: 'Agent Development' },
     { href: '/categories/case-studies', label: 'Case Studies' },
-    { href: '/categories/media', label: 'Media' },
   ],
   connect: [
-    { href: 'https://virgent.ai', label: 'Get AI Help', external: true },
+    { href: 'https://virgent.ai', label: 'Get AI Help', external: true, highlight: true },
     { href: '/about', label: 'About' },
     { href: '/rss.xml', label: 'RSS Feed' },
   ],
@@ -28,26 +26,20 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-background-elevated border-t border-border mt-20">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+    <footer className="border-t border-border mt-16 bg-background-elevated">
+      <div className="container-editorial py-16">
+        {/* Top section */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 pb-12 border-b border-border">
           {/* Brand */}
-          <div className="md:col-span-2">
-            <Link href="/" className="inline-flex items-center gap-3">
-              <Image
-                src="/images/logo.png"
-                alt="The Interop Logo"
-                width={48}
-                height={48}
-                className="rounded-full"
-              />
-              <span className="text-2xl font-bold font-display text-gradient">
-                The Interop
-              </span>
+          <div className="md:col-span-5">
+            <Link href="/" className="inline-block">
+              <span className="font-display text-2xl font-bold tracking-tight">The Interop</span>
             </Link>
-            <p className="mt-4 text-foreground-muted max-w-md">
+            <p className="mt-4 text-foreground-muted max-w-sm leading-relaxed">
               {siteConfig.description}
             </p>
+            
+            {/* Social */}
             <div className="flex items-center gap-4 mt-6">
               {socialLinks.map((social) => (
                 <a
@@ -55,7 +47,7 @@ export default function Footer() {
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-2 rounded-lg text-foreground-muted hover:text-accent-primary hover:bg-card transition-all"
+                  className="text-foreground-subtle hover:text-foreground transition-colors"
                   aria-label={social.label}
                 >
                   <social.icon className="w-5 h-5" />
@@ -65,14 +57,14 @@ export default function Footer() {
           </div>
 
           {/* Content Links */}
-          <div>
-            <h3 className="font-semibold text-foreground mb-4">Content</h3>
-            <ul className="space-y-2">
+          <div className="md:col-span-3">
+            <h3 className="section-label mb-4">Content</h3>
+            <ul className="space-y-3">
               {footerLinks.content.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-foreground-muted hover:text-foreground transition-colors"
+                    className="text-sm text-foreground-muted hover:text-foreground transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -82,9 +74,9 @@ export default function Footer() {
           </div>
 
           {/* Connect Links */}
-          <div>
-            <h3 className="font-semibold text-foreground mb-4">Connect</h3>
-            <ul className="space-y-2">
+          <div className="md:col-span-2">
+            <h3 className="section-label mb-4">Connect</h3>
+            <ul className="space-y-3">
               {footerLinks.connect.map((link) => (
                 <li key={link.href}>
                   {'external' in link && link.external ? (
@@ -92,14 +84,19 @@ export default function Footer() {
                       href={link.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-accent-primary hover:text-foreground transition-colors font-medium"
+                      className={`text-sm inline-flex items-center gap-1 ${
+                        'highlight' in link && link.highlight 
+                          ? 'text-accent-gold font-semibold hover:underline' 
+                          : 'text-foreground-muted hover:text-foreground'
+                      } transition-colors`}
                     >
                       {link.label}
+                      <ExternalLink className="w-3 h-3" />
                     </a>
                   ) : (
                     <Link
                       href={link.href}
-                      className="text-foreground-muted hover:text-foreground transition-colors"
+                      className="text-sm text-foreground-muted hover:text-foreground transition-colors"
                     >
                       {link.label}
                     </Link>
@@ -108,38 +105,42 @@ export default function Footer() {
               ))}
             </ul>
           </div>
+
+          {/* Newsletter */}
+          <div className="md:col-span-2">
+            <h3 className="section-label mb-4">Newsletter</h3>
+            <p className="text-sm text-foreground-muted mb-4">
+              Weekly insights delivered to your inbox.
+            </p>
+            <Link 
+              href="/subscribe" 
+              className="btn-secondary text-xs py-2 px-4"
+            >
+              Subscribe
+            </Link>
+          </div>
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-12 pt-8 border-t border-border flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p className="text-sm text-foreground-muted">
+        <div className="pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+          <p className="text-xs text-foreground-subtle">
             © {currentYear} {siteConfig.author.name}. All rights reserved.
           </p>
-          <div className="flex items-center gap-4 text-sm text-foreground-muted">
+          <div className="flex items-center gap-6 text-xs text-foreground-subtle">
             <a
               href="https://alton.tech"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-accent-primary transition-colors"
+              className="hover:text-foreground transition-colors"
             >
               alton.tech
             </a>
-            <span>•</span>
             <a
               href="/rss.xml"
-              className="flex items-center gap-1 hover:text-accent-primary transition-colors"
+              className="flex items-center gap-1 hover:text-foreground transition-colors"
             >
-              <Rss className="w-4 h-4" />
+              <Rss className="w-3 h-3" />
               RSS
-            </a>
-            <span>•</span>
-            <a
-              href={siteConfig.links.substack}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-accent-primary transition-colors"
-            >
-              Substack Archive
             </a>
           </div>
         </div>
@@ -147,4 +148,3 @@ export default function Footer() {
     </footer>
   );
 }
-

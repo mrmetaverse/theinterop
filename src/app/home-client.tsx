@@ -1,21 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import dynamic from 'next/dynamic';
 import Link from 'next/link';
-import { ArrowRight, Sparkles } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import PostCard from '@/components/ui/PostCard';
-import CategoryCard from '@/components/ui/CategoryCard';
-import SubscribeForm from '@/components/ui/SubscribeForm';
-import { Category, CATEGORIES, PostMeta } from '@/lib/types';
-
-// Dynamically import Three.js scene (client-side only)
-const InteropScene = dynamic(() => import('@/components/three/InteropScene'), {
-  ssr: false,
-  loading: () => <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-accent-primary/10" />,
-});
+import { Category, CATEGORIES, PostMeta, ORIGINAL_SOURCES, OriginalSource } from '@/lib/types';
 
 interface HomeClientProps {
   featuredPost?: PostMeta;
@@ -23,108 +12,229 @@ interface HomeClientProps {
   categoryCounts: Record<Category, number>;
 }
 
+function formatDate(dateString: string): string {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  });
+}
+
+function ArticleCard({ post, size = 'medium' }: { post: PostMeta; size?: 'large' | 'medium' | 'small' }) {
+  const source = post.originalSource && post.originalSource !== 'jessealton' 
+    ? ORIGINAL_SOURCES[post.originalSource as OriginalSource]?.label 
+    : null;
+
+  if (size === 'large') {
+    return (
+      <article className="group">
+        <Link href={`/blog/${post.slug}`} className="block">
+          <span className="category-label">{CATEGORIES[post.category].label}</span>
+          <h2 className="article-headline text-4xl md:text-5xl mt-2 mb-4 leading-tight">
+            {post.title}
+          </h2>
+          <p className="article-excerpt text-lg mb-4 line-clamp-3">
+            {post.excerpt}
+          </p>
+          <div className="article-meta flex items-center gap-3">
+            <span>{formatDate(post.date)}</span>
+            <span>·</span>
+            <span>{post.readingTime} min read</span>
+            {source && (
+              <>
+                <span>·</span>
+                <span className="text-accent-primary">via {source}</span>
+              </>
+            )}
+          </div>
+        </Link>
+      </article>
+    );
+  }
+
+  if (size === 'small') {
+    return (
+      <article className="group py-4 border-b border-border last:border-b-0">
+        <Link href={`/blog/${post.slug}`} className="block">
+          <h3 className="article-headline text-base leading-snug mb-1">
+            {post.title}
+          </h3>
+          <span className="article-meta">{formatDate(post.date)}</span>
+        </Link>
+      </article>
+    );
+  }
+
+  return (
+    <article className="group">
+      <Link href={`/blog/${post.slug}`} className="block">
+        <span className="category-label">{CATEGORIES[post.category].label}</span>
+        <h3 className="article-headline text-xl md:text-2xl mt-1 mb-2 leading-tight">
+          {post.title}
+        </h3>
+        <p className="article-excerpt text-sm mb-3 line-clamp-2">
+          {post.excerpt}
+        </p>
+        <div className="article-meta flex items-center gap-2">
+          <span>{formatDate(post.date)}</span>
+          {source && (
+            <>
+              <span>·</span>
+              <span className="text-accent-primary">via {source}</span>
+            </>
+          )}
+        </div>
+      </Link>
+    </article>
+  );
+}
+
 export default function HomeClient({ featuredPost, latestPosts, categoryCounts }: HomeClientProps) {
-  const [visualsEnabled, setVisualsEnabled] = useState(true);
+  const [, setVisualsEnabled] = useState(false);
+
+  // All posts for the sidebar
+  const allRecentPosts = featuredPost ? [featuredPost, ...latestPosts] : latestPosts;
 
   return (
     <>
-      <Header onToggleVisuals={() => setVisualsEnabled(!visualsEnabled)} visualsEnabled={visualsEnabled} />
+      <Header onToggleVisuals={() => setVisualsEnabled(v => !v)} visualsEnabled={false} />
 
-      <main>
-        {/* Hero Section */}
-        <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
-          <InteropScene enabled={visualsEnabled} />
+      <main className="pt-20">
+        {/* Masthead */}
+        <div className="border-b-2 border-foreground">
+          <div className="mx-auto max-w-7xl px-4 py-8 text-center">
+            <h1 className="font-display text-5xl md:text-6xl font-bold tracking-tight">
+              The Interop
+            </h1>
+            <p className="mt-2 font-sans text-xs tracking-widest uppercase text-foreground-muted">
+              AI Strategy · Agent Development · Business Transformation
+            </p>
+            <p className="mt-1 font-sans text-xs text-foreground-muted">
+              by Jesse Alton
+            </p>
+          </div>
+        </div>
 
-          <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-32 text-center">
-            <div className="animate-fade-in-up">
-              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-card text-foreground-muted text-sm font-medium shadow-neu-sm mb-8">
-                <Sparkles className="w-4 h-4 text-accent-primary" />
-                Content for Builders, Founders, and Funders
-              </span>
+        {/* Main Content Grid */}
+        <div className="mx-auto max-w-7xl px-4 py-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            
+            {/* Main Column */}
+            <div className="lg:col-span-8">
+              {/* Lead Story */}
+              {featuredPost && (
+                <div className="pb-8 border-b border-border">
+                  <ArticleCard post={featuredPost} size="large" />
+                </div>
+              )}
 
-              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-display font-bold tracking-tight">
-                <span className="text-foreground">The</span>{' '}
-                <span className="text-gradient">Interop</span>
-              </h1>
+              {/* Secondary Stories */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 py-8 border-b border-border">
+                {latestPosts.slice(0, 2).map((post) => (
+                  <ArticleCard key={post.slug} post={post} size="medium" />
+                ))}
+              </div>
 
-              <p className="mt-6 text-xl sm:text-2xl text-foreground-muted max-w-3xl mx-auto">
-                Weekly insights at the intersection of AI, business transformation, and emerging technology—from the frontlines of real-world implementation.
-              </p>
+              {/* Third Row */}
+              {latestPosts.length > 2 && (
+                <div className="py-8">
+                  <ArticleCard post={latestPosts[2]} size="medium" />
+                </div>
+              )}
+            </div>
 
-              <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-                <Link href="/blog" className="neu-button-primary">
-                  Read the Latest
-                  <ArrowRight className="w-5 h-5" />
+            {/* Sidebar */}
+            <aside className="lg:col-span-4 lg:border-l lg:border-border lg:pl-8">
+              {/* Latest Section */}
+              <div className="mb-8">
+                <h2 className="section-header">Latest</h2>
+                <div>
+                  {allRecentPosts.slice(0, 5).map((post) => (
+                    <ArticleCard key={post.slug} post={post} size="small" />
+                  ))}
+                </div>
+                <Link 
+                  href="/blog" 
+                  className="inline-block mt-4 font-sans text-xs font-semibold tracking-wider uppercase text-accent-primary hover:underline"
+                >
+                  View All Articles →
                 </Link>
-                <Link href="/subscribe" className="neu-button">
+              </div>
+
+              {/* Topics Section */}
+              <div className="mb-8">
+                <h2 className="section-header">Topics</h2>
+                <div className="space-y-3">
+                  {(Object.keys(CATEGORIES) as Category[])
+                    .filter(cat => cat !== 'media' && cat !== 'from-the-press')
+                    .map((category) => (
+                      <Link
+                        key={category}
+                        href={`/categories/${category}`}
+                        className="flex items-center justify-between py-2 border-b border-border-subtle hover:border-foreground transition-colors"
+                      >
+                        <span className="font-sans text-sm font-medium">
+                          {CATEGORIES[category].label}
+                        </span>
+                        <span className="font-sans text-xs text-foreground-muted">
+                          {categoryCounts[category]} articles
+                        </span>
+                      </Link>
+                    ))}
+                </div>
+              </div>
+
+              {/* Subscribe Box */}
+              <div className="p-6 bg-background-elevated border border-border">
+                <h3 className="font-display text-xl font-bold mb-2">Stay Informed</h3>
+                <p className="font-sans text-sm text-foreground-muted mb-4">
+                  Weekly insights on AI strategy and emerging technology.
+                </p>
+                <Link href="/subscribe" className="btn-editorial-primary w-full justify-center">
                   Subscribe
                 </Link>
               </div>
-            </div>
+            </aside>
           </div>
+        </div>
 
-          {/* Scroll indicator */}
-          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-            <div className="w-6 h-10 rounded-full border-2 border-foreground-muted/30 flex items-start justify-center p-2">
-              <div className="w-1.5 h-3 rounded-full bg-foreground-muted/50 animate-pulse" />
-            </div>
-          </div>
-        </section>
-
-        {/* Featured Post */}
-        {featuredPost && (
-          <section className="py-20 bg-background-elevated">
-            <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-              <div className="flex items-center justify-between mb-8">
-                <h2 className="text-3xl font-display font-bold text-foreground">Latest</h2>
-                <Link href="/blog" className="flex items-center gap-1 text-accent-primary font-medium hover:gap-2 transition-all">
-                  View all posts
-                  <ArrowRight className="w-4 h-4" />
+        {/* Bottom Section - About */}
+        <div className="border-t-2 border-foreground">
+          <div className="mx-auto max-w-7xl px-4 py-12">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+              <div>
+                <h2 className="section-header">About The Interop</h2>
+                <p className="font-body text-foreground-muted leading-relaxed">
+                  The Interop explores the intersection of AI, business transformation, and emerging technology. 
+                  Written by Jesse Alton, founder of Virgent AI, it offers practical insights for founders, 
+                  executives, and builders implementing AI in production.
+                </p>
+                <Link href="/about" className="inline-block mt-4 font-sans text-xs font-semibold tracking-wider uppercase text-accent-primary hover:underline">
+                  Learn More →
                 </Link>
               </div>
-              <PostCard post={featuredPost} featured />
-            </div>
-          </section>
-        )}
-
-        {/* Latest Posts */}
-        <section className="py-20">
-          <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl font-display font-bold text-foreground mb-8">Featured Posts</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {latestPosts.map((post) => (
-                <PostCard key={post.slug} post={post} />
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Categories */}
-        <section className="py-20 bg-background-elevated">
-          <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl font-display font-bold text-foreground mb-8">Explore Topics</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
-              {(Object.keys(CATEGORIES) as Category[]).map((category) => (
-                <CategoryCard key={category} category={category} postCount={categoryCounts[category]} />
-              ))}
+              <div>
+                <h2 className="section-header">Get AI Help</h2>
+                <p className="font-body text-foreground-muted leading-relaxed">
+                  Need help implementing AI in your business? Virgent AI helps companies move from 
+                  AI-curious to AI-powered with practical, production-ready solutions.
+                </p>
+                <a 
+                  href="https://virgent.ai" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-block mt-4 font-sans text-xs font-semibold tracking-wider uppercase text-accent-primary hover:underline"
+                >
+                  Visit Virgent AI →
+                </a>
+              </div>
             </div>
           </div>
-        </section>
-
-        {/* Subscribe CTA */}
-        <section className="py-20">
-          <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-3xl font-display font-bold text-foreground mb-4">Stay in the Loop</h2>
-            <p className="text-foreground-muted mb-8">
-              Get weekly insights on AI strategy, agent development, and emerging tech delivered straight to your inbox.
-            </p>
-            <SubscribeForm />
-          </div>
-        </section>
+        </div>
       </main>
 
       <Footer />
     </>
   );
 }
-

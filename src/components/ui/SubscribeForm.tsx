@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Mail, ArrowRight, Check, Loader2 } from 'lucide-react';
+import { ArrowRight, Check, Loader2 } from 'lucide-react';
 
 interface SubscribeFormProps {
   variant?: 'inline' | 'card';
@@ -52,27 +52,21 @@ export default function SubscribeForm({ variant = 'inline', className = '' }: Su
 
   if (variant === 'card') {
     return (
-      <div className={`neu-card ${className}`}>
-        <div className="flex items-center gap-3 mb-4">
-          <div className="p-3 rounded-xl bg-gradient-accent">
-            <Mail className="w-6 h-6 text-white" />
-          </div>
-          <div>
-            <h3 className="font-display font-semibold text-foreground">Subscribe to The Interop</h3>
-            <p className="text-sm text-foreground-muted">Get insights delivered weekly</p>
-          </div>
-        </div>
+      <div className={`editorial-card ${className}`}>
+        <span className="section-label">Newsletter</span>
+        <h3 className="headline-md mt-2 mb-2">Subscribe to The Interop</h3>
+        <p className="text-sm text-foreground-muted mb-6">Weekly insights on AI strategy and implementation.</p>
 
         {status === 'success' ? (
           <div className="text-center py-4">
-            <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-green-500/10 text-green-500 mb-4">
+            <div className="inline-flex items-center justify-center w-12 h-12 border-2 border-green-600 text-green-600 mb-4">
               <Check className="w-6 h-6" />
             </div>
-            <p className="text-foreground font-medium mb-2">Check your inbox!</p>
+            <p className="font-semibold mb-2">Check your inbox</p>
             <p className="text-sm text-foreground-muted mb-4">{message}</p>
             <button
               onClick={resetForm}
-              className="text-sm text-accent-primary hover:underline"
+              className="text-sm font-semibold uppercase tracking-wider hover:underline"
             >
               Subscribe another email
             </button>
@@ -83,8 +77,8 @@ export default function SubscribeForm({ variant = 'inline', className = '' }: Su
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
-              className="neu-input"
+              placeholder="your@email.com"
+              className="editorial-input"
               disabled={status === 'loading'}
               required
             />
@@ -92,25 +86,25 @@ export default function SubscribeForm({ variant = 'inline', className = '' }: Su
             <button
               type="submit"
               disabled={status === 'loading'}
-              className="neu-button-primary w-full"
+              className="btn-primary w-full"
             >
               {status === 'loading' ? (
-                <Loader2 className="w-5 h-5 animate-spin" />
+                <Loader2 className="w-4 h-4 animate-spin" />
               ) : (
                 <>
                   Subscribe
-                  <ArrowRight className="w-5 h-5" />
+                  <ArrowRight className="w-4 h-4" />
                 </>
               )}
             </button>
 
             {message && status === 'error' && (
-              <p className="text-sm text-red-500 text-center">{message}</p>
+              <p className="text-sm text-red-600 text-center">{message}</p>
             )}
           </form>
         )}
 
-        <p className="mt-4 text-xs text-foreground-muted text-center">
+        <p className="mt-4 text-xs text-foreground-subtle text-center">
           No spam. Unsubscribe anytime.
         </p>
       </div>
@@ -120,14 +114,14 @@ export default function SubscribeForm({ variant = 'inline', className = '' }: Su
   // Inline variant
   if (status === 'success') {
     return (
-      <div className={`flex flex-col items-center gap-3 py-4 ${className}`}>
-        <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-green-500/10 text-green-500">
-          <Check className="w-5 h-5" />
+      <div className={`flex flex-col items-center gap-4 py-6 ${className}`}>
+        <div className="inline-flex items-center justify-center w-12 h-12 border-2 border-green-600 text-green-600">
+          <Check className="w-6 h-6" />
         </div>
-        <p className="text-foreground font-medium">{message}</p>
+        <p className="font-semibold">{message}</p>
         <button
           onClick={resetForm}
-          className="text-sm text-accent-primary hover:underline"
+          className="text-sm font-semibold uppercase tracking-wider hover:underline"
         >
           Subscribe another email
         </button>
@@ -136,38 +130,36 @@ export default function SubscribeForm({ variant = 'inline', className = '' }: Su
   }
 
   return (
-    <form onSubmit={handleSubmit} className={`flex flex-col sm:flex-row gap-3 ${className}`}>
-      <div className="relative flex-1">
-        <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-foreground-muted pointer-events-none" />
+    <form onSubmit={handleSubmit} className={`max-w-md mx-auto ${className}`}>
+      <div className="flex flex-col sm:flex-row border border-border">
         <input
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="Enter your email"
-          className="neu-input"
-          style={{ paddingLeft: '3rem' }}
+          placeholder="your@email.com"
+          className="flex-1 px-4 py-3 bg-background text-foreground border-none focus:outline-none"
           disabled={status === 'loading'}
           required
         />
+        
+        <button
+          type="submit"
+          disabled={status === 'loading'}
+          className="px-6 py-3 bg-foreground text-background font-semibold text-sm uppercase tracking-wider hover:bg-foreground-muted transition-colors flex items-center justify-center gap-2"
+        >
+          {status === 'loading' ? (
+            <Loader2 className="w-4 h-4 animate-spin" />
+          ) : (
+            <>
+              Subscribe
+              <ArrowRight className="w-4 h-4" />
+            </>
+          )}
+        </button>
       </div>
-      
-      <button
-        type="submit"
-        disabled={status === 'loading'}
-        className="neu-button-primary whitespace-nowrap"
-      >
-        {status === 'loading' ? (
-          <Loader2 className="w-5 h-5 animate-spin" />
-        ) : (
-          <>
-            Subscribe
-            <ArrowRight className="w-5 h-5" />
-          </>
-        )}
-      </button>
 
       {message && status === 'error' && (
-        <p className="text-sm text-red-500 mt-2 sm:mt-0">{message}</p>
+        <p className="text-sm text-red-600 mt-3 text-center">{message}</p>
       )}
     </form>
   );
