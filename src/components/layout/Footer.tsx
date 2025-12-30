@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Twitter, Github, Linkedin, Mail, Rss, Youtube } from 'lucide-react';
+import { Github, Linkedin, Rss, Youtube } from 'lucide-react';
 import { siteConfig } from '@/lib/types';
 
 const footerLinks = {
@@ -19,11 +19,9 @@ const footerLinks = {
 };
 
 const socialLinks = [
-  { href: siteConfig.links.twitter, icon: Twitter, label: 'Twitter' },
   { href: siteConfig.links.youtube, icon: Youtube, label: 'YouTube' },
   { href: siteConfig.links.github, icon: Github, label: 'GitHub' },
   { href: siteConfig.links.linkedin, icon: Linkedin, label: 'LinkedIn' },
-  { href: `mailto:${siteConfig.author.email}`, icon: Mail, label: 'Email' },
 ];
 
 export default function Footer() {
