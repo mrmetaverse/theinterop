@@ -138,13 +138,14 @@ export default function SubscribeForm({ variant = 'inline', className = '' }: Su
   return (
     <form onSubmit={handleSubmit} className={`flex flex-col sm:flex-row gap-3 ${className}`}>
       <div className="relative flex-1">
-        <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-foreground-muted" />
+        <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-foreground-muted pointer-events-none" />
         <input
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Enter your email"
-          className="neu-input pl-12"
+          className="neu-input"
+          style={{ paddingLeft: '3rem' }}
           disabled={status === 'loading'}
           required
         />
