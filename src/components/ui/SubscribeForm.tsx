@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { Mail, ArrowRight, Check, Loader2 } from 'lucide-react';
-import { siteConfig } from '@/lib/types';
 
 interface SubscribeFormProps {
   variant?: 'inline' | 'card';
@@ -21,32 +20,34 @@ export default function SubscribeForm({ variant = 'inline', className = '' }: Su
 
     setStatus('loading');
 
-    // For now, redirect to Substack subscribe
-    // In production, this would connect to your email provider API
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      
-      // Open Substack subscribe in new tab as interim solution
-      window.open(`${siteConfig.links.substack}/subscribe?email=${encodeURIComponent(email)}`, '_blank');
-      
-      setStatus('success');
-      setMessage('Redirecting to complete subscription...');
-      setEmail('');
-      
-      setTimeout(() => {
-        setStatus('idle');
-        setMessage('');
-      }, 3000);
+      const response = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setStatus('success');
+        setMessage(data.message || 'Check your email to confirm your subscription!');
+        setEmail('');
+      } else {
+        setStatus('error');
+        setMessage(data.error || 'Something went wrong. Please try again.');
+      }
     } catch {
       setStatus('error');
       setMessage('Something went wrong. Please try again.');
-      
-      setTimeout(() => {
-        setStatus('idle');
-        setMessage('');
-      }, 3000);
     }
+  };
+
+  const resetForm = () => {
+    setStatus('idle');
+    setMessage('');
   };
 
   if (variant === 'card') {
@@ -62,43 +63,52 @@ export default function SubscribeForm({ variant = 'inline', className = '' }: Su
           </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Enter your email"
-            className="neu-input"
-            disabled={status === 'loading' || status === 'success'}
-            required
-          />
-          
-          <button
-            type="submit"
-            disabled={status === 'loading' || status === 'success'}
-            className="neu-button-primary w-full"
-          >
-            {status === 'loading' ? (
-              <Loader2 className="w-5 h-5 animate-spin" />
-            ) : status === 'success' ? (
-              <>
-                <Check className="w-5 h-5" />
-                Subscribed!
-              </>
-            ) : (
-              <>
-                Subscribe
-                <ArrowRight className="w-5 h-5" />
-              </>
-            )}
-          </button>
+        {status === 'success' ? (
+          <div className="text-center py-4">
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-green-500/10 text-green-500 mb-4">
+              <Check className="w-6 h-6" />
+            </div>
+            <p className="text-foreground font-medium mb-2">Check your inbox!</p>
+            <p className="text-sm text-foreground-muted mb-4">{message}</p>
+            <button
+              onClick={resetForm}
+              className="text-sm text-accent-primary hover:underline"
+            >
+              Subscribe another email
+            </button>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter your email"
+              className="neu-input"
+              disabled={status === 'loading'}
+              required
+            />
+            
+            <button
+              type="submit"
+              disabled={status === 'loading'}
+              className="neu-button-primary w-full"
+            >
+              {status === 'loading' ? (
+                <Loader2 className="w-5 h-5 animate-spin" />
+              ) : (
+                <>
+                  Subscribe
+                  <ArrowRight className="w-5 h-5" />
+                </>
+              )}
+            </button>
 
-          {message && (
-            <p className={`text-sm ${status === 'error' ? 'text-red-500' : 'text-foreground-muted'}`}>
-              {message}
-            </p>
-          )}
-        </form>
+            {message && status === 'error' && (
+              <p className="text-sm text-red-500 text-center">{message}</p>
+            )}
+          </form>
+        )}
 
         <p className="mt-4 text-xs text-foreground-muted text-center">
           No spam. Unsubscribe anytime.
@@ -108,6 +118,23 @@ export default function SubscribeForm({ variant = 'inline', className = '' }: Su
   }
 
   // Inline variant
+  if (status === 'success') {
+    return (
+      <div className={`flex flex-col items-center gap-3 py-4 ${className}`}>
+        <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-green-500/10 text-green-500">
+          <Check className="w-5 h-5" />
+        </div>
+        <p className="text-foreground font-medium">{message}</p>
+        <button
+          onClick={resetForm}
+          className="text-sm text-accent-primary hover:underline"
+        >
+          Subscribe another email
+        </button>
+      </div>
+    );
+  }
+
   return (
     <form onSubmit={handleSubmit} className={`flex flex-col sm:flex-row gap-3 ${className}`}>
       <div className="relative flex-1">
@@ -118,23 +145,18 @@ export default function SubscribeForm({ variant = 'inline', className = '' }: Su
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Enter your email"
           className="neu-input pl-12"
-          disabled={status === 'loading' || status === 'success'}
+          disabled={status === 'loading'}
           required
         />
       </div>
       
       <button
         type="submit"
-        disabled={status === 'loading' || status === 'success'}
+        disabled={status === 'loading'}
         className="neu-button-primary whitespace-nowrap"
       >
         {status === 'loading' ? (
           <Loader2 className="w-5 h-5 animate-spin" />
-        ) : status === 'success' ? (
-          <>
-            <Check className="w-5 h-5" />
-            Done!
-          </>
         ) : (
           <>
             Subscribe
@@ -143,12 +165,9 @@ export default function SubscribeForm({ variant = 'inline', className = '' }: Su
         )}
       </button>
 
-      {message && (
-        <p className={`text-sm ${status === 'error' ? 'text-red-500' : 'text-foreground-muted'}`}>
-          {message}
-        </p>
+      {message && status === 'error' && (
+        <p className="text-sm text-red-500 mt-2 sm:mt-0">{message}</p>
       )}
     </form>
   );
 }
-

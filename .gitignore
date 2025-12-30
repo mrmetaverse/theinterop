@@ -48,3 +48,4 @@ coverage/
 
 # Substack migration
 substack-export/
+.env*.local

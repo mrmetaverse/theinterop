@@ -13,13 +13,19 @@
     "new:post": "npx tsx scripts/new-post.ts",
     "migrate": "npx tsx scripts/migrate-substack.ts",
     "fetch:substack": "npx tsx scripts/fetch-substack.ts",
-    "import:all": "npx tsx scripts/import-all-sources.ts"
+    "import:all": "npx tsx scripts/import-all-sources.ts",
+    "db:generate": "drizzle-kit generate",
+    "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.4.2",
+    "@vercel/postgres": "^0.10.0",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
+    "dotenv": "^17.2.3",
+    "drizzle-orm": "^0.45.1",
     "feed": "^5.1.0",
     "gray-matter": "^4.0.3",
     "lucide-react": "^0.562.0",
@@ -33,6 +39,7 @@
     "rehype-slug": "^6.0.0",
     "remark": "^15.0.1",
     "remark-html": "^16.0.1",
+    "resend": "^6.6.0",
     "rss": "^1.2.2",
     "three": "^0.182.0"
   },
@@ -43,6 +50,7 @@
     "@types/react-dom": "^19",
     "@types/three": "^0.182.0",
     "@types/turndown": "^5.0.6",
+    "drizzle-kit": "^0.31.8",
     "eslint": "^9",
     "eslint-config-next": "16.1.1",
     "tailwindcss": "^4",

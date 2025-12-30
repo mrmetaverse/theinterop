@@ -1,8 +1,10 @@
 import { Metadata } from 'next';
+import { Suspense } from 'react';
 import { Linkedin, Mail, Rss, Globe } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import SubscribeForm from '@/components/ui/SubscribeForm';
+import { SubscribeStatus } from './subscribe-client';
 import { siteConfig } from '@/lib/types';
 
 export const metadata: Metadata = {
@@ -46,6 +48,11 @@ export default function SubscribePage() {
 
       <main className="pt-24 pb-20">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+          {/* Status Messages */}
+          <Suspense fallback={null}>
+            <SubscribeStatus />
+          </Suspense>
+
           {/* Header */}
           <div className="text-center mb-12">
             <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-accent text-white mb-6 shadow-neu">
