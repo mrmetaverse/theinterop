@@ -54,19 +54,39 @@ const companies = [
 const previousWork = [
   {
     name: 'Magick ML',
-    role: 'Founder (Previous)',
+    role: 'Founder',
     description: 'Open-source no-code visual node-graph AI Development Environment for building, deploying, and scaling AI agents.',
     url: 'https://magickml.com',
   },
   {
-    name: 'OMI Group',
-    role: 'Co-chair (Previous)',
-    description: 'Open Metaverse Interoperability Group promoting open standards and interoperability across virtual worlds.',
-    url: 'https://omigroup.org',
+    name: 'Angell XR',
+    role: 'Founder',
+    description: 'Metaverse incubation community fostering collaboration and innovation in virtual worlds and extended reality.',
+  },
+  {
+    name: 'Dapt',
+    role: 'Founder',
+    description: 'Content management system designed for modern web publishing and digital content workflows.',
+  },
+  {
+    name: 'Elite Marketing',
+    role: 'Founder',
+    description: 'Door-to-door lead generation for solar and remodeling industries, building high-performance sales teams.',
+  },
+  {
+    name: 'Native Flats',
+    role: 'Founder',
+    description: 'Flip flops for sore feet at weddings, events, and bars—because dancing should never stop.',
   },
 ];
 
 const volunteerWork = [
+  {
+    name: 'OMI Group',
+    role: 'Co-chair',
+    description: 'Open Metaverse Interoperability Group promoting open standards and interoperability across virtual worlds.',
+    url: 'https://omigroup.org',
+  },
   {
     name: 'Maryland Tech Council (MTC)',
     role: 'Chesapeake Regional Chapter',
@@ -297,27 +317,48 @@ export default function AboutPage() {
             <h2 className="text-2xl font-display font-semibold text-foreground mb-6">
               Previous Startups
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {previousWork.map((company) => (
-                <a
-                  key={company.name}
-                  href={company.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="neu-card group opacity-80 hover:opacity-100 transition-opacity"
-                >
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <h3 className="font-display font-semibold text-foreground group-hover:text-accent-primary transition-colors">
-                        {company.name}
-                      </h3>
-                      <p className="text-sm text-foreground-muted">{company.role}</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {previousWork.map((company) => {
+                const content = (
+                  <>
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <h3 className="font-display font-semibold text-foreground group-hover:text-accent-primary transition-colors text-sm">
+                          {company.name}
+                        </h3>
+                        <p className="text-xs text-foreground-muted mt-1">{company.role}</p>
+                      </div>
+                      {'url' in company && company.url && (
+                        <ExternalLink className="w-4 h-4 text-foreground-muted group-hover:text-accent-primary transition-colors" />
+                      )}
                     </div>
-                    <ExternalLink className="w-5 h-5 text-foreground-muted group-hover:text-accent-primary transition-colors" />
+                    <p className="mt-2 text-foreground-muted text-xs">{company.description}</p>
+                  </>
+                );
+
+                if ('url' in company && company.url) {
+                  return (
+                    <a
+                      key={company.name}
+                      href={company.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="neu-card-sm group p-4 opacity-80 hover:opacity-100 transition-opacity"
+                    >
+                      {content}
+                    </a>
+                  );
+                }
+
+                return (
+                  <div
+                    key={company.name}
+                    className="neu-card-sm p-4 opacity-80"
+                  >
+                    {content}
                   </div>
-                  <p className="mt-3 text-foreground-muted text-sm">{company.description}</p>
-                </a>
-              ))}
+                );
+              })}
             </div>
           </section>
 
