@@ -38,14 +38,14 @@ const socialLinks = [
 const companies = [
   {
     name: 'Virgent AI',
-    role: 'Co-founder & CEO',
+    role: 'Founder & CEO',
     description: 'Full-service AI development agency helping organizations implement AI solutions that actually ship. Need AI help? Start here.',
     url: 'https://virgent.ai',
     highlight: true,
   },
   {
     name: 'AltonTech Inc.',
-    role: 'Founder',
+    role: 'Founder & CEO',
     description: 'Product development, sales, and AI enablement with 100+ successful commercial and government projects.',
     url: 'https://alton.tech',
   },
