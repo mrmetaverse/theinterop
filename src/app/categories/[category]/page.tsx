@@ -1,10 +1,9 @@
 import { Metadata } from 'next';
-import Link from 'next/link';
 import { notFound, redirect } from 'next/navigation';
-import { ArrowLeft } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import PostCard from '@/components/ui/PostCard';
+import CategoryNav from '@/components/ui/CategoryNav';
 import { getPostsByCategory } from '@/lib/posts';
 import { siteConfig, Category, CATEGORIES } from '@/lib/types';
 
@@ -72,28 +71,22 @@ export default async function CategoryPage({ params }: PageProps) {
       <Header />
 
       <main className="pt-24 pb-20">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-          {/* Back link */}
-          <Link
-            href="/categories"
-            className="inline-flex items-center gap-2 text-foreground-muted hover:text-foreground transition-colors mb-8"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            All Categories
-          </Link>
-
+        <div className="container-editorial">
           {/* Header */}
-          <div className="mb-12">
+          <div className="mb-8">
             <h1 className="text-4xl sm:text-5xl font-display font-bold text-foreground mb-4">
               {category.label}
             </h1>
-            <p className="text-xl text-foreground-muted max-w-2xl">
+            <p className="text-lg text-foreground-muted max-w-2xl">
               {category.description}
             </p>
-            <p className="mt-4 text-foreground-muted">
+            <p className="mt-2 text-sm text-foreground-subtle">
               {posts.length} {posts.length === 1 ? 'article' : 'articles'}
             </p>
           </div>
+
+          {/* Category Navigation */}
+          <CategoryNav activeCategory={categorySlug as Category} />
 
           {/* Posts Grid */}
           {posts.length > 0 ? (
@@ -103,7 +96,7 @@ export default async function CategoryPage({ params }: PageProps) {
               ))}
             </div>
           ) : (
-            <div className="neu-card text-center py-12">
+            <div className="editorial-card text-center py-12">
               <p className="text-foreground-muted">
                 No articles in this category yet. Check back soon!
               </p>
