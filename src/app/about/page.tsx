@@ -151,9 +151,6 @@ export default function AboutPage() {
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
           {/* Header */}
           <div className="text-center mb-16">
-            <div className="w-32 h-32 mx-auto rounded-full bg-gradient-accent flex items-center justify-center text-white text-5xl font-bold shadow-neu mb-8">
-              JA
-            </div>
             <h1 className="text-4xl sm:text-5xl font-display font-bold text-foreground mb-4">
               About The Interop
             </h1>
