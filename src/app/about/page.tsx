@@ -54,19 +54,19 @@ const companies = [
 const previousWork = [
   {
     name: 'Magick ML',
-    role: 'Founder',
+    role: 'Co-founder',
     description: 'Open-source no-code visual node-graph AI Development Environment for building, deploying, and scaling AI agents.',
     url: 'https://magickml.com',
+  },
+  {
+    name: 'Dapt',
+    role: 'Co-founder',
+    description: 'Content management system designed for modern web publishing and digital content workflows.',
   },
   {
     name: 'Angell XR',
     role: 'Founder',
     description: 'Metaverse incubation community fostering collaboration and innovation in virtual worlds and extended reality.',
-  },
-  {
-    name: 'Dapt',
-    role: 'Founder',
-    description: 'Content management system designed for modern web publishing and digital content workflows.',
   },
   {
     name: 'Elite Marketing',
