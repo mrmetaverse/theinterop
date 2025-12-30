@@ -9,6 +9,7 @@ import PostCard from '@/components/ui/PostCard';
 import { getPostBySlug, getRelatedPosts, getAllPostsMeta } from '@/lib/posts';
 import { siteConfig, CATEGORIES, ORIGINAL_SOURCES, OriginalSource } from '@/lib/types';
 import { formatDate, getReadingTimeText, getCategoryClass, absoluteUrl } from '@/lib/utils';
+import { markdownToHtml } from '@/lib/markdown';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -68,57 +69,8 @@ export default async function PostPage({ params }: PageProps) {
   const shareText = encodeURIComponent(post.title);
   const relatedPosts = getRelatedPosts(slug, 2);
 
-  // Simple markdown-to-HTML conversion for display
-  const renderContent = (content: string) => {
-    return content.split('\n').map((line, i) => {
-      if (line.startsWith('# ')) {
-        return <h1 key={i}>{line.slice(2)}</h1>;
-      }
-      if (line.startsWith('## ')) {
-        return <h2 key={i}>{line.slice(3)}</h2>;
-      }
-      if (line.startsWith('### ')) {
-        return <h3 key={i}>{line.slice(4)}</h3>;
-      }
-      if (line.startsWith('#### ')) {
-        return <h4 key={i}>{line.slice(5)}</h4>;
-      }
-      if (line.startsWith('---')) {
-        return <hr key={i} />;
-      }
-      if (line.startsWith('- ')) {
-        return <li key={i}>{line.slice(2)}</li>;
-      }
-      if (/^\d+\. /.test(line)) {
-        return <li key={i}>{line.replace(/^\d+\. /, '')}</li>;
-      }
-      if (line.startsWith('> ')) {
-        return <blockquote key={i}>{line.slice(2)}</blockquote>;
-      }
-      if (line.startsWith('![')) {
-        const match = line.match(/!\[(.*?)\]\((.*?)\)/);
-        if (match) {
-          return (
-            <figure key={i} className="my-6">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={match[2]} alt={match[1]} className="rounded-xl w-full" />
-              {match[1] && <figcaption className="text-center text-sm text-foreground-muted mt-2">{match[1]}</figcaption>}
-            </figure>
-          );
-        }
-      }
-      if (line.trim() === '') {
-        return null;
-      }
-      // Handle bold, italic, links, and code
-      let formatted = line
-        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-        .replace(/\*(.*?)\*/g, '<em>$1</em>')
-        .replace(/`(.*?)`/g, '<code>$1</code>')
-        .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" class="text-accent-primary hover:underline">$1</a>');
-      return <p key={i} dangerouslySetInnerHTML={{ __html: formatted }} />;
-    });
-  };
+  // Convert markdown content to HTML
+  const htmlContent = await markdownToHtml(post.content);
 
   return (
     <>
@@ -200,9 +152,10 @@ export default async function PostPage({ params }: PageProps) {
           </header>
 
           {/* Content */}
-          <div className="prose-interop max-w-none">
-            {renderContent(post.content)}
-          </div>
+          <div 
+            className="prose-interop max-w-none"
+            dangerouslySetInnerHTML={{ __html: htmlContent }}
+          />
 
           {/* Original Source Attribution */}
           {post.originalSource && (

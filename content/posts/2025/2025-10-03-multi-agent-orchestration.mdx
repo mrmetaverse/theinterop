@@ -2,25 +2,115 @@
 title: "Multi-Agent AI Orchestration"
 date: "2025-10-03"
 slug: "multi-agent-orchestration"
-excerpt: "Building intelligent multi-agent systems with WebLLM, democratic governance, and spatial coordination."
+excerpt: "Building intelligent multi-agent systems with WebLLM, democratic governance, and spatial coordination. A deep dive into agent orchestration platforms, custom solutions vs. walled gardens, and lessons from Magick ML."
 category: "case-studies"
 tags: ["case-study", "ai-implementation", "enterprise-ai-strategy"]
 coverImage: ""
 featured: false
 draft: false
 originalSource: "virgent"
-canonicalUrl: "https://www.virgent.ai/case-studies/multi-agent-orchestration-sandbox"
+canonicalUrl: "https://www.virgent.ai/case-studies/multi-agent-orchestration"
 ---
 
 # Multi-Agent AI Orchestration
 
 **Industry:** Enterprise AI Strategy
 
-Building intelligent multi-agent systems with WebLLM, democratic governance, and spatial coordination.
+## The Multi-Agent Future
+
+Single agents are powerful. Multiple agents working together are transformative. We've been building multi-agent systems since our Magick ML days, and the lessons we've learned apply directly to enterprise deployments.
+
+## Core Concepts
+
+### Agent Orchestration Patterns
+
+We implement several orchestration approaches depending on the use case:
+
+1. **Hierarchical** - Manager agents delegate to specialist agents
+2. **Democratic** - Agents vote on decisions with weighted inputs
+3. **Spatial** - Agents have domains and coordinate at boundaries
+4. **Pipeline** - Sequential processing with handoffs
+
+### Democratic Governance in AI Systems
+
+One of our innovations is democratic agent governance:
+
+```
+Agent A: "I think we should route to support"
+Agent B: "I disagree, this looks like sales"
+Agent C: "Support, based on sentiment analysis"
+
+Result: Support (2-1 vote) with confidence weighting
+```
+
+This creates more robust decisions than single-agent approaches.
+
+## Technical Implementation
+
+### WebLLM Integration
+
+We use WebLLM for:
+- Browser-side inference (privacy-preserving)
+- Reduced latency for real-time applications
+- Fallback when cloud APIs are unavailable
+
+### LangChain Coordination
+
+Our multi-agent systems use LangChain for:
+- Memory management across agents
+- Tool coordination
+- Conversation threading
+
+## Lessons from Magick ML
+
+Our experience building Magick ML taught us:
+
+1. **Visual orchestration helps** - Non-technical stakeholders can understand flows
+2. **Debugging is hard** - Multi-agent systems need excellent observability
+3. **Coordination overhead is real** - More agents isn't always better
+4. **Emergent behavior happens** - Plan for unexpected agent interactions
+
+## Production Patterns
+
+### RPG Stats for Agents
+
+We sometimes implement "RPG stats" for agents:
+
+| Stat | Purpose |
+|------|---------|
+| Confidence | Self-reported certainty |
+| Energy | Processing budget |
+| Reputation | Historical accuracy |
+| Specialization | Domain expertise |
+
+This creates more nuanced orchestration decisions.
+
+### Emotional Dynamics
+
+For customer-facing agents, we model emotional states:
+- Detect customer frustration
+- Adjust agent tone accordingly
+- Escalate before situations deteriorate
+
+## Custom vs. Walled Gardens
+
+The build vs. buy decision for multi-agent systems:
+
+**Walled Gardens (Azure, AWS, etc.)**
+- Faster initial deployment
+- Limited customization
+- Vendor lock-in risk
+
+**Custom Solutions**
+- Full control
+- Higher initial investment
+- Long-term flexibility
+
+We typically recommend hybrid approaches: use platforms for commodity functions, build custom for competitive advantages.
 
 ---
 
-*Read the full case study on [Virgent AI](https://www.virgent.ai/case-studies/multi-agent-orchestration-sandbox)*
+*Multi-agent orchestration represents the next evolution in AI systems. We've been building these systems for years and can help you navigate the complexity.*
 
 ---
 
