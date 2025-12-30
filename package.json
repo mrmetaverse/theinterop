@@ -14,6 +14,7 @@
     "migrate": "npx tsx scripts/migrate-substack.ts",
     "fetch:substack": "npx tsx scripts/fetch-substack.ts",
     "import:all": "npx tsx scripts/import-all-sources.ts",
+    "sync:virgent": "npx tsx scripts/sync-virgent-content.ts",
     "db:generate": "drizzle-kit generate",
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio"

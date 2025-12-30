@@ -3,6 +3,8 @@ import path from 'path';
 import matter from 'gray-matter';
 import readingTime from 'reading-time';
 import { Post, PostMeta, Category, VALID_CATEGORIES } from './types';
+import { db, posts as postsTable } from './db';
+import { eq, desc, isNull, or } from 'drizzle-orm';
 
 const postsDirectory = path.join(process.cwd(), 'content/posts');
 
@@ -116,9 +118,76 @@ function isProduction(): boolean {
 }
 
 /**
+ * Convert database post to Post type
+ */
+function dbPostToPost(dbPost: typeof postsTable.$inferSelect): Post {
+  return {
+    title: dbPost.title,
+    date: formatDate(dbPost.date),
+    slug: dbPost.slug,
+    excerpt: dbPost.excerpt || '',
+    category: validateCategory(dbPost.category || undefined),
+    tags: dbPost.tags ? JSON.parse(dbPost.tags) : [],
+    coverImage: dbPost.coverImage || undefined,
+    featured: dbPost.featured || false,
+    draft: dbPost.draft || false,
+    originalSource: dbPost.originalSource || undefined,
+    canonicalUrl: dbPost.canonicalUrl || undefined,
+    updatedDate: dbPost.updatedDate ? formatDate(dbPost.updatedDate) : undefined,
+    content: dbPost.content,
+    readingTime: calculateReadingTime(dbPost.content),
+    filePath: `db/${dbPost.slug}`, // Virtual path for database posts
+  };
+}
+
+/**
+ * Get all posts from database
+ */
+async function getPostsFromDb(): Promise<Post[]> {
+  try {
+    const dbPosts = await db
+      .select()
+      .from(postsTable)
+      .where(
+        isProduction() 
+          ? or(eq(postsTable.draft, false), isNull(postsTable.draft))
+          : undefined
+      )
+      .orderBy(desc(postsTable.date));
+    
+    return dbPosts.map(dbPostToPost);
+  } catch (error) {
+    console.error('Error fetching posts from database:', error);
+    return [];
+  }
+}
+
+/**
+ * Get a single post from database by slug
+ */
+async function getPostFromDb(slug: string): Promise<Post | null> {
+  try {
+    const results = await db
+      .select()
+      .from(postsTable)
+      .where(eq(postsTable.slug, slug))
+      .limit(1);
+    
+    if (results.length === 0) return null;
+    return dbPostToPost(results[0]);
+  } catch (error) {
+    console.error(`Error fetching post ${slug} from database:`, error);
+    return null;
+  }
+}
+
+/**
  * Get all posts (excluding drafts in production)
+ * First tries database, then falls back to MDX files
  */
 export function getAllPosts(): Post[] {
+  // For now, use MDX files as primary source
+  // Database is used for synced external content
   const files = getAllPostFiles();
   const posts = files
     .map((file) => parsePostFile(file))
@@ -134,6 +203,36 @@ export function getAllPosts(): Post[] {
 }
 
 /**
+ * Get all posts (async version that includes database)
+ */
+export async function getAllPostsAsync(): Promise<Post[]> {
+  // Get posts from both sources
+  const [dbPosts, mdxPosts] = await Promise.all([
+    getPostsFromDb(),
+    Promise.resolve(getAllPosts()),
+  ]);
+  
+  // Merge posts, preferring database version if slug exists in both
+  const postMap = new Map<string, Post>();
+  
+  // First add MDX posts
+  for (const post of mdxPosts) {
+    postMap.set(post.slug, post);
+  }
+  
+  // Override with database posts (they have full content)
+  for (const post of dbPosts) {
+    postMap.set(post.slug, post);
+  }
+  
+  // Sort by date descending
+  const allPosts = Array.from(postMap.values())
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  
+  return allPosts;
+}
+
+/**
  * Get all posts metadata (without content)
  */
 export function getAllPostsMeta(): PostMeta[] {
@@ -146,6 +245,18 @@ export function getAllPostsMeta(): PostMeta[] {
 export function getPostBySlug(slug: string): Post | null {
   const posts = getAllPosts();
   return posts.find((post) => post.slug === slug) || null;
+}
+
+/**
+ * Get a single post by slug (async version that checks database first)
+ */
+export async function getPostBySlugAsync(slug: string): Promise<Post | null> {
+  // Try database first (may have fresher/full content)
+  const dbPost = await getPostFromDb(slug);
+  if (dbPost) return dbPost;
+  
+  // Fall back to MDX file
+  return getPostBySlug(slug);
 }
 
 /**
