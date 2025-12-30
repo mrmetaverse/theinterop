@@ -5,16 +5,14 @@ import { siteConfig } from '@/lib/types';
 const footerLinks = {
   content: [
     { href: '/blog', label: 'Blog' },
-    { href: '/media', label: 'Media' },
     { href: '/categories/ai-strategy', label: 'AI Strategy' },
     { href: '/categories/agent-development', label: 'Agent Development' },
     { href: '/categories/case-studies', label: 'Case Studies' },
+    { href: '/categories/media', label: 'Media' },
   ],
   connect: [
     { href: 'https://virgent.ai', label: 'Get AI Help', external: true },
     { href: '/about', label: 'About' },
-    { href: '/press', label: 'Press' },
-    { href: '/subscribe', label: 'Subscribe' },
     { href: '/rss.xml', label: 'RSS Feed' },
   ],
 };

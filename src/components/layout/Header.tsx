@@ -12,11 +12,8 @@ interface HeaderProps {
 
 const navItems = [
   { href: '/blog', label: 'Blog' },
-  { href: '/media', label: 'Media' },
   { href: '/categories', label: 'Categories' },
   { href: '/about', label: 'About' },
-  { href: '/press', label: 'Press' },
-  { href: '/subscribe', label: 'Subscribe' },
 ];
 
 export default function Header({ onToggleVisuals, visualsEnabled = true }: HeaderProps) {

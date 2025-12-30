@@ -1,5 +1,8 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
+import { ArrowLeft } from 'lucide-react';
+import Header from '@/components/layout/Header';
+import Footer from '@/components/layout/Footer';
 import { 
   getPodcastData, 
   getVideoData, 
@@ -45,45 +48,28 @@ export default function MediaPage() {
   });
 
   return (
-    <main className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container mx-auto flex h-16 items-center justify-between px-4">
-          <Link href="/" className="flex items-center gap-2">
-            <span className="text-xl font-display font-bold text-foreground">The Interop</span>
-          </Link>
-          <nav className="flex items-center gap-6">
-            <Link href="/blog" className="text-sm text-foreground-muted hover:text-foreground transition-colors">
-              Blog
-            </Link>
-            <Link href="/media" className="text-sm text-foreground font-medium">
-              Media
-            </Link>
-            <Link href="/about" className="text-sm text-foreground-muted hover:text-foreground transition-colors">
-              About
-            </Link>
-          </nav>
-        </div>
-      </header>
+    <>
+      <Header />
 
-      <div className="container mx-auto px-4 py-12">
-        {/* Page Header */}
-        <div className="max-w-3xl mb-16">
-          <h1 className="text-4xl md:text-5xl font-display font-bold text-foreground mb-4">
-            Media
-          </h1>
-          <p className="text-lg text-foreground-muted">
-            Videos on AI, the metaverse, and emerging technology.
-          </p>
-          <p className="text-sm text-foreground-muted mt-2">
-            Looking for blog posts? Visit the{' '}
-            <Link href="/blog" className="text-accent hover:underline">Blog</Link>
-            {' '}section for articles from{' '}
-            <a href="https://mrmetaverse.substack.com/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
-              The Interop on Substack
-            </a>.
-          </p>
-        </div>
+      <main className="pt-24 pb-20">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          {/* Back link */}
+          <Link
+            href="/categories"
+            className="inline-flex items-center gap-2 text-foreground-muted hover:text-foreground transition-colors mb-8"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            All Categories
+          </Link>
+          {/* Page Header */}
+          <div className="mb-12">
+            <h1 className="text-4xl sm:text-5xl font-display font-bold text-foreground mb-4">
+              Media
+            </h1>
+            <p className="text-xl text-foreground-muted max-w-2xl">
+              Videos, podcasts, and multimedia content on AI, the metaverse, and emerging technology.
+            </p>
+          </div>
 
         {/* Active YouTube Channel Section */}
         {activeChannelVideos.length > 0 && (
@@ -398,42 +384,38 @@ export default function MediaPage() {
           </div>
         </section>
 
-        {/* Blog Reference */}
-        <section className="mt-12 neumorphic-card rounded-xl p-8 text-center bg-gradient-to-br from-card to-background">
-          <h2 className="text-xl font-display font-bold text-foreground mb-4">
-            Looking for Written Content?
-          </h2>
-          <p className="text-foreground-muted mb-6">
-            Blog posts from &quot;The Interop&quot; on Substack are available in the Blog section.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link 
-              href="/blog"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-accent text-background font-medium hover:bg-accent/90 transition-colors"
-            >
-              View Blog Posts
-            </Link>
-            <a 
-              href="https://mrmetaverse.substack.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-accent hover:underline"
-            >
-              Visit Substack Archive
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-              </svg>
-            </a>
-          </div>
-        </section>
-      </div>
-      
-      {/* Footer */}
-      <footer className="border-t border-border mt-16 py-8">
-        <div className="container mx-auto px-4 text-center text-sm text-foreground-muted">
-          <p>© {new Date().getFullYear()} {siteConfig.author.name}. All rights reserved.</p>
+          {/* Blog Reference */}
+          <section className="mt-12 neu-card text-center bg-gradient-to-br from-card to-background-elevated">
+            <h2 className="text-xl font-display font-bold text-foreground mb-4">
+              Looking for Written Content?
+            </h2>
+            <p className="text-foreground-muted mb-6">
+              Blog posts from The Interop on Substack are available in the Blog section.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Link 
+                href="/blog"
+                className="neu-button-primary"
+              >
+                View Blog Posts
+              </Link>
+              <a 
+                href="https://mrmetaverse.substack.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-accent-primary hover:underline"
+              >
+                Visit Substack Archive
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+              </a>
+            </div>
+          </section>
         </div>
-      </footer>
-    </main>
+      </main>
+
+      <Footer />
+    </>
   );
 }

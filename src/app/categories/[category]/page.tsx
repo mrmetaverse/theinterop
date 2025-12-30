@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
@@ -8,14 +8,23 @@ import PostCard from '@/components/ui/PostCard';
 import { getPostsByCategory } from '@/lib/posts';
 import { siteConfig, Category, CATEGORIES } from '@/lib/types';
 
+// Special categories that have their own dedicated pages
+const SPECIAL_CATEGORY_REDIRECTS: Record<string, string> = {
+  'media': '/media',
+  'from-the-press': '/press',
+};
+
 interface PageProps {
   params: Promise<{ category: string }>;
 }
 
 export async function generateStaticParams() {
-  return Object.keys(CATEGORIES).map((category) => ({
-    category,
-  }));
+  // Only generate static params for regular categories (not special ones)
+  return Object.keys(CATEGORIES)
+    .filter(cat => !SPECIAL_CATEGORY_REDIRECTS[cat])
+    .map((category) => ({
+      category,
+    }));
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -40,6 +49,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function CategoryPage({ params }: PageProps) {
   const { category: categorySlug } = await params;
+
+  // Redirect special categories to their dedicated pages
+  if (SPECIAL_CATEGORY_REDIRECTS[categorySlug]) {
+    redirect(SPECIAL_CATEGORY_REDIRECTS[categorySlug]);
+  }
 
   if (!Object.keys(CATEGORIES).includes(categorySlug)) {
     notFound();

@@ -51,7 +51,9 @@ export type Category =
   | 'business-transformation'
   | 'agent-development'
   | 'future-tech'
-  | 'case-studies';
+  | 'case-studies'
+  | 'media'
+  | 'from-the-press';
 
 export const CATEGORIES: Record<Category, { label: string; description: string; color: string }> = {
   'ai-strategy': {
@@ -78,6 +80,16 @@ export const CATEGORIES: Record<Category, { label: string; description: string; 
     label: 'Case Studies',
     description: 'Real-world implementations and lessons learned',
     color: 'var(--color-category-case-studies)',
+  },
+  'media': {
+    label: 'Media',
+    description: 'Videos, podcasts, and multimedia content',
+    color: 'var(--color-category-media)',
+  },
+  'from-the-press': {
+    label: 'From the Press',
+    description: 'Press coverage, interviews, and media appearances',
+    color: 'var(--color-category-press)',
   },
 };
 

@@ -263,10 +263,14 @@ export function getPostCountByCategory(): Record<Category, number> {
     'agent-development': 0,
     'future-tech': 0,
     'case-studies': 0,
+    'media': 0,
+    'from-the-press': 0,
   };
 
   posts.forEach((post) => {
-    counts[post.category]++;
+    if (counts[post.category] !== undefined) {
+      counts[post.category]++;
+    }
   });
 
   return counts;
