@@ -5,49 +5,61 @@
    ============================================ */
 
 @theme {
-  --color-background: #faf9f6;
+  /* Brand Colors
+     White: #f0efef | Black: #000000 | Gray: #7a7a7a
+     Primary (blurple): #623cea | Secondary (red): #ea3c3c
+  */
+  
+  /* Light Mode */
+  --color-background: #f0efef;
   --color-background-elevated: #ffffff;
-  --color-foreground: #121212;
-  --color-foreground-muted: #666666;
-  --color-foreground-subtle: #999999;
+  --color-foreground: #000000;
+  --color-foreground-muted: #7a7a7a;
+  --color-foreground-subtle: #9a9a9a;
   
-  --color-accent-primary: #0080c6;
-  --color-accent-primary-hover: #006da8;
-  --color-accent-secondary: #c72c41;
+  /* Brand accents */
+  --color-accent-primary: #623cea;
+  --color-accent-primary-hover: #5030d0;
+  --color-accent-secondary: #ea3c3c;
   
+  /* Surfaces */
   --color-card: #ffffff;
-  --color-card-hover: #faf9f6;
-  --color-border: #e0e0e0;
-  --color-border-heavy: #121212;
-  --color-border-subtle: #f0f0f0;
+  --color-card-hover: #f0efef;
+  --color-border: #d0d0d0;
+  --color-border-heavy: #000000;
+  --color-border-subtle: #e5e5e5;
   
-  --color-category-ai-strategy: #0080c6;
-  --color-category-business-transformation: #7b68ee;
-  --color-category-agent-development: #2e8b57;
-  --color-category-future-tech: #c72c41;
-  --color-category-case-studies: #d4740c;
+  /* Category colors - using brand palette */
+  --color-category-ai-strategy: #623cea;
+  --color-category-business-transformation: #623cea;
+  --color-category-agent-development: #623cea;
+  --color-category-future-tech: #ea3c3c;
+  --color-category-case-studies: #ea3c3c;
   
+  /* Typography */
   --font-display: 'Playfair Display', 'Georgia', serif;
   --font-body: 'Source Serif 4', 'Georgia', serif;
   --font-sans: 'Inter', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
   
+  /* Animation */
   --transition-fast: 100ms ease;
   --transition-base: 200ms ease;
 }
 
+/* Dark Mode - Inverted white/black */
 .dark {
-  --color-background: #121212;
-  --color-background-elevated: #1a1a1a;
-  --color-foreground: #f5f5f5;
-  --color-foreground-muted: #a0a0a0;
-  --color-foreground-subtle: #666666;
+  --color-background: #000000;
+  --color-background-elevated: #0a0a0a;
+  --color-foreground: #f0efef;
+  --color-foreground-muted: #9a9a9a;
+  --color-foreground-subtle: #7a7a7a;
   
-  --color-card: #1a1a1a;
-  --color-card-hover: #242424;
-  --color-border: #333333;
-  --color-border-heavy: #f5f5f5;
-  --color-border-subtle: #242424;
+  --color-card: #0a0a0a;
+  --color-card-hover: #151515;
+  --color-border: #2a2a2a;
+  --color-border-heavy: #f0efef;
+  --color-border-subtle: #1a1a1a;
 }
 
 * {
@@ -169,7 +181,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .text-accent-gold {
-  color: #c5a572;
+  color: var(--color-accent-primary);
 }
 
 /* Buttons */
@@ -298,7 +310,7 @@ h1, h2, h3, h4, h5, h6 {
 .prose-editorial ol { list-style-type: decimal; }
 .prose-editorial blockquote { border-left: 3px solid var(--color-border-heavy); padding-left: 1.5rem; margin: 2rem 0; font-style: italic; color: var(--color-foreground-muted); }
 .prose-editorial code { background-color: var(--color-border-subtle); padding: 0.125rem 0.375rem; font-size: 0.875em; font-family: var(--font-mono); }
-.prose-editorial pre { background-color: #1a1a1a; color: #f5f5f5; padding: 1.5rem; margin: 1.5rem 0; overflow-x: auto; }
+.prose-editorial pre { background-color: #000000; color: #f0efef; padding: 1.5rem; margin: 1.5rem 0; overflow-x: auto; }
 .prose-editorial pre code { background-color: transparent; padding: 0; color: inherit; }
 .prose-editorial hr { margin: 2.5rem 0; border: none; border-top: 1px solid var(--color-border); }
 .prose-editorial table { width: 100%; margin: 1.5rem 0; border-collapse: collapse; }
@@ -345,7 +357,7 @@ h1, h2, h3, h4, h5, h6 {
 .prose-interop li { margin: 0.5rem 0; }
 .prose-interop blockquote { border-left: 3px solid var(--color-border-heavy); padding-left: 1rem; margin: 1.5rem 0; font-style: italic; }
 .prose-interop code { background-color: var(--color-border-subtle); padding: 0.125rem 0.375rem; font-family: var(--font-mono); }
-.prose-interop pre { background-color: #1a1a1a; padding: 1rem; margin: 1.5rem 0; overflow-x: auto; }
+.prose-interop pre { background-color: #000000; color: #f0efef; padding: 1rem; margin: 1.5rem 0; overflow-x: auto; }
 .prose-interop pre code { background-color: transparent; }
 .prose-interop table { width: 100%; margin: 1.5rem 0; }
 .prose-interop th, .prose-interop td { border: 1px solid var(--color-border); padding: 0.5rem 1rem; }
