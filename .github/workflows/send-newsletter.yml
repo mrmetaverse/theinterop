@@ -1,0 +1,65 @@
+name: Send Newsletter on New Post
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'content/posts/**/*.mdx'
+
+jobs:
+  send-newsletter:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v40
+        with:
+          files: |
+            content/posts/**/*.mdx
+
+      - name: Extract post slug and check if new
+        id: check-post
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: |
+          echo "Changed files: ${{ steps.changed-files.outputs.all_changed_files }}"
+          
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            # Check if this is a new file (not just modified)
+            if git diff HEAD~1 HEAD --name-status | grep "^A" | grep -q "$file"; then
+              # Extract slug from filename (format: YYYY-MM-DD-slug.mdx)
+              filename=$(basename "$file" .mdx)
+              slug=$(echo "$filename" | sed 's/^[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}-//')
+              
+              # Check if draft: false in frontmatter
+              if grep -q "draft: false" "$file"; then
+                echo "New published post detected: $slug"
+                echo "slug=$slug" >> $GITHUB_OUTPUT
+                echo "should_send=true" >> $GITHUB_OUTPUT
+                exit 0
+              else
+                echo "New post is draft, skipping: $slug"
+              fi
+            fi
+          done
+          
+          echo "should_send=false" >> $GITHUB_OUTPUT
+
+      - name: Send newsletter
+        if: steps.check-post.outputs.should_send == 'true'
+        run: |
+          curl -X POST ${{ secrets.SITE_URL }}/api/send-newsletter \
+            -H "Authorization: Bearer ${{ secrets.NEWSLETTER_API_KEY }}" \
+            -H "Content-Type: application/json" \
+            -d "{\"slug\": \"${{ steps.check-post.outputs.slug }}\"}"
+
+      - name: Notify on success
+        if: steps.check-post.outputs.should_send == 'true'
+        run: |
+          echo "✅ Newsletter sent for post: ${{ steps.check-post.outputs.slug }}"

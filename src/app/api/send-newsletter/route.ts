@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { db, subscribers } from '@/lib/db';
+import { db, subscribers, newsletterSends } from '@/lib/db';
 import { sendNewsletterEmail } from '@/lib/email';
 import { getPostBySlug } from '@/lib/posts';
 import { eq } from 'drizzle-orm';
@@ -73,6 +73,14 @@ export async function POST(request: NextRequest) {
 
     const successful = results.filter((r) => r.success).length;
     const failed = results.filter((r) => !r.success).length;
+
+    // Track the send in database
+    await db.insert(newsletterSends).values({
+      postSlug: slug,
+      recipientCount: emails.length,
+      successCount: successful,
+      failedCount: failed,
+    });
 
     return NextResponse.json({
       message: `Newsletter sent to ${successful} subscribers`,

@@ -5,6 +5,23 @@ import * as schema from './schema';
 export const db = drizzle(sql, { schema });
 
 // Re-export schema
-export { subscribers, posts } from './schema';
-export type { Subscriber, NewSubscriber, Post as DbPost, NewPost } from './schema';
+export { 
+  subscribers, 
+  posts, 
+  newsletterSends, 
+  contactMessages, 
+  adminSessions 
+} from './schema';
+export type { 
+  Subscriber, 
+  NewSubscriber, 
+  Post as DbPost, 
+  NewPost,
+  NewsletterSend,
+  NewNewsletterSend,
+  ContactMessage,
+  NewContactMessage,
+  AdminSession,
+  NewAdminSession
+} from './schema';
 

@@ -53,3 +53,64 @@ export const posts = pgTable(
 
 export type Post = typeof posts.$inferSelect;
 export type NewPost = typeof posts.$inferInsert;
+
+// Newsletter sends tracking
+export const newsletterSends = pgTable(
+  'newsletter_sends',
+  {
+    id: serial('id').primaryKey(),
+    postSlug: varchar('post_slug', { length: 255 }).notNull(),
+    sentAt: timestamp('sent_at').defaultNow().notNull(),
+    recipientCount: serial('recipient_count').notNull(),
+    successCount: serial('success_count').notNull(),
+    failedCount: serial('failed_count').notNull(),
+  },
+  (table) => ({
+    postSlugIdx: index('idx_newsletter_sends_post_slug').on(table.postSlug),
+    sentAtIdx: index('idx_newsletter_sends_sent_at').on(table.sentAt),
+  })
+);
+
+export type NewsletterSend = typeof newsletterSends.$inferSelect;
+export type NewNewsletterSend = typeof newsletterSends.$inferInsert;
+
+// Contact messages from users
+export const contactMessages = pgTable(
+  'contact_messages',
+  {
+    id: serial('id').primaryKey(),
+    email: varchar('email', { length: 255 }).notNull(),
+    name: varchar('name', { length: 255 }),
+    subject: varchar('subject', { length: 500 }),
+    message: text('message').notNull(),
+    status: varchar('status', { length: 20 }).notNull().default('unread'), // 'unread', 'read', 'replied'
+    repliedAt: timestamp('replied_at'),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+  },
+  (table) => ({
+    statusIdx: index('idx_contact_messages_status').on(table.status),
+    createdAtIdx: index('idx_contact_messages_created_at').on(table.createdAt),
+  })
+);
+
+export type ContactMessage = typeof contactMessages.$inferSelect;
+export type NewContactMessage = typeof contactMessages.$inferInsert;
+
+// Admin sessions
+export const adminSessions = pgTable(
+  'admin_sessions',
+  {
+    id: serial('id').primaryKey(),
+    email: varchar('email', { length: 255 }).notNull(),
+    token: varchar('token', { length: 64 }).notNull().unique(),
+    expiresAt: timestamp('expires_at').notNull(),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+  },
+  (table) => ({
+    tokenIdx: index('idx_admin_sessions_token').on(table.token),
+    expiresAtIdx: index('idx_admin_sessions_expires_at').on(table.expiresAt),
+  })
+);
+
+export type AdminSession = typeof adminSessions.$inferSelect;
+export type NewAdminSession = typeof adminSessions.$inferInsert;

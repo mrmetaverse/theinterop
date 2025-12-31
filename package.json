@@ -17,7 +17,8 @@
     "sync:virgent": "npx tsx scripts/sync-virgent-content.ts",
     "db:generate": "drizzle-kit generate",
     "db:push": "drizzle-kit push",
-    "db:studio": "drizzle-kit studio"
+    "db:studio": "drizzle-kit studio",
+    "admin:password": "npx tsx scripts/generate-admin-password.ts"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.7",
