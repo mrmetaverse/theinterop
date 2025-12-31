@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "npm run lint:content && next build",
+    "build": "npm run lint:content && npm run generate:thumbnails && next build",
     "start": "next start",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
@@ -15,6 +15,7 @@
     "fetch:substack": "npx tsx scripts/fetch-substack.ts",
     "import:all": "npx tsx scripts/import-all-sources.ts",
     "sync:virgent": "npx tsx scripts/sync-virgent-content.ts",
+    "generate:thumbnails": "npx tsx scripts/generate-video-thumbnails.ts",
     "db:generate": "drizzle-kit generate",
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",

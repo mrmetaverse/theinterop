@@ -257,3 +257,117 @@ Unsubscribe: ${unsubscribeUrl}
   return results;
 }
 
+export async function sendBatchNewsletterEmail(
+  emails: string[],
+  posts: BatchNewsletterPost[]
+) {
+  const results = [];
+
+  // Send in batches of 50 to avoid rate limits
+  const batchSize = 50;
+  for (let i = 0; i < emails.length; i += batchSize) {
+    const batch = emails.slice(i, i + batchSize);
+
+    const promises = batch.map(async (email) => {
+      const unsubscribeUrl = `${SITE_URL}/api/unsubscribe?email=${encodeURIComponent(email)}`;
+
+      // Generate the articles HTML
+      const articlesHtml = posts.map(post => `
+        <div style="margin-bottom: 32px; padding-bottom: 32px; border-bottom: 1px solid #27272a;">
+          ${post.coverImage ? `<img src="${post.coverImage}" alt="" style="width: 100%; border-radius: 8px; margin-bottom: 16px;">` : ''}
+          
+          <h3 style="font-size: 20px; font-weight: 700; margin: 0 0 12px 0; color: #e4e4e7;">
+            ${post.title}
+          </h3>
+          
+          <p style="font-size: 14px; line-height: 1.6; margin: 0 0 16px 0; color: #a1a1aa;">
+            ${post.excerpt}
+          </p>
+          
+          <a href="${post.postUrl}" style="display: inline-block; background: linear-gradient(135deg, #6366f1, #8b5cf6); color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px;">
+            Read More →
+          </a>
+        </div>
+      `).join('');
+
+      const articlesText = posts.map(post => `
+${post.title}
+${post.excerpt}
+Read more: ${post.postUrl}
+      `.trim()).join('\n\n---\n\n');
+
+      try {
+        const { data, error } = await resend.emails.send({
+          from: FROM_EMAIL,
+          to: email,
+          subject: `The Interop Weekly: ${posts.length} New ${posts.length === 1 ? 'Article' : 'Articles'}`,
+          headers: {
+            'List-Unsubscribe': `<${unsubscribeUrl}>`,
+          },
+          html: `
+            <!DOCTYPE html>
+            <html>
+              <head>
+                <meta charset="utf-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              </head>
+              <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #0a0a0f; color: #e4e4e7; padding: 40px 20px; margin: 0;">
+                <div style="max-width: 560px; margin: 0 auto; background-color: #18181b; border-radius: 12px; padding: 40px; border: 1px solid #27272a;">
+                  <h1 style="font-size: 14px; font-weight: 600; margin: 0 0 8px 0; background: linear-gradient(135deg, #6366f1, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                    The Interop
+                  </h1>
+                  
+                  <p style="font-size: 16px; line-height: 1.6; margin: 0 0 32px 0; color: #a1a1aa;">
+                    ${posts.length} new ${posts.length === 1 ? 'article' : 'articles'} on AI strategy, agent development, and business transformation.
+                  </p>
+                  
+                  ${articlesHtml}
+                  
+                  <hr style="border: none; border-top: 1px solid #27272a; margin: 32px 0 0 0;">
+                  
+                  <p style="font-size: 12px; color: #52525b; margin: 24px 0 0 0;">
+                    The Interop by Jesse Alton<br>
+                    <a href="${SITE_URL}" style="color: #6366f1;">jessealton.com</a> • 
+                    <a href="${unsubscribeUrl}" style="color: #52525b;">Unsubscribe</a>
+                  </p>
+                </div>
+              </body>
+            </html>
+          `,
+          text: `
+The Interop Weekly
+${posts.length} new ${posts.length === 1 ? 'article' : 'articles'} on AI strategy, agent development, and business transformation.
+
+${articlesText}
+
+---
+The Interop by Jesse Alton
+${SITE_URL}
+
+Unsubscribe: ${unsubscribeUrl}
+          `.trim(),
+        });
+
+        if (error) {
+          console.error(`Failed to send to ${email}:`, error);
+          return { email, success: false, error };
+        }
+
+        return { email, success: true, data };
+      } catch (err) {
+        console.error(`Failed to send to ${email}:`, err);
+        return { email, success: false, error: err };
+      }
+    });
+
+    const batchResults = await Promise.all(promises);
+    results.push(...batchResults);
+
+    // Small delay between batches
+    if (i + batchSize < emails.length) {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+    }
+  }
+
+  return results;
+}

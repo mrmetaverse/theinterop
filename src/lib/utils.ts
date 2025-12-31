@@ -111,6 +111,20 @@ export function getSocialImageUrl(coverImage?: string): string {
     if (coverImage.startsWith('http')) {
       return coverImage;
     }
+    
+    // If it's a video or gif, try to use the thumbnail version
+    if (coverImage.endsWith('.mp4') || coverImage.endsWith('.webm')) {
+      const thumbPath = coverImage.replace(/\.(mp4|webm)$/, '-thumb.jpg');
+      return `${baseUrl}${thumbPath}`;
+    }
+    
+    if (coverImage.endsWith('.gif')) {
+      // Check if there's a thumbnail, otherwise use the gif
+      const thumbPath = coverImage.replace('.gif', '-thumb.jpg');
+      // For social media, prefer static image over gif
+      return `${baseUrl}${thumbPath}`;
+    }
+    
     // Otherwise, make it absolute
     return `${baseUrl}${coverImage}`;
   }
