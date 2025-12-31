@@ -119,16 +119,15 @@ export function getSocialImageUrl(coverImage?: string): string {
     }
     
     if (coverImage.endsWith('.gif')) {
-      // Check if there's a thumbnail, otherwise use the gif
+      // For social media, prefer static thumbnail over gif
       const thumbPath = coverImage.replace('.gif', '-thumb.jpg');
-      // For social media, prefer static image over gif
       return `${baseUrl}${thumbPath}`;
     }
     
-    // Otherwise, make it absolute
+    // For other images, make absolute
     return `${baseUrl}${coverImage}`;
   }
   
-  // Fallback to logo
+  // Always fallback to logo if no cover image
   return `${baseUrl}/images/logo.png`;
 }
