@@ -102,3 +102,19 @@ export function getCategoryClass(category: string): string {
   return classMap[category] || 'neu-tag';
 }
 
+// Get social share image URL with fallback
+export function getSocialImageUrl(coverImage?: string): string {
+  const baseUrl = 'https://jessealton.com';
+  
+  if (coverImage) {
+    // If coverImage is already absolute URL, return it
+    if (coverImage.startsWith('http')) {
+      return coverImage;
+    }
+    // Otherwise, make it absolute
+    return `${baseUrl}${coverImage}`;
+  }
+  
+  // Fallback to logo
+  return `${baseUrl}/images/logo.png`;
+}
