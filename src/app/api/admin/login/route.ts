@@ -60,6 +60,7 @@ export async function POST(request: NextRequest) {
 
     // Check rate limit
     if (isRateLimited(ip)) {
+      console.log('Rate limited IP:', ip);
       return NextResponse.json(
         { error: 'Too many login attempts. Please try again in 15 minutes.' },
         { status: 429 }
@@ -73,6 +74,14 @@ export async function POST(request: NextRequest) {
         { status: 500 }
       );
     }
+
+    // Debug logging (remove after fixing)
+    console.log('Login attempt:', {
+      emailMatch: email === ADMIN_EMAIL,
+      passwordLength: password?.length,
+      expectedPasswordLength: ADMIN_PASSWORD?.length,
+      passwordMatch: password === ADMIN_PASSWORD,
+    });
 
     // Validate credentials
     if (email !== ADMIN_EMAIL || password !== ADMIN_PASSWORD) {
