@@ -16,18 +16,18 @@ export async function GET(request: NextRequest) {
     // Try database verification first
     if (token) {
       try {
-        const session = await db.query.adminSessions.findFirst({
-          where: and(
-            eq(adminSessions.token, token),
-            gt(adminSessions.expiresAt, new Date())
-          ),
-        });
+    const session = await db.query.adminSessions.findFirst({
+      where: and(
+        eq(adminSessions.token, token),
+        gt(adminSessions.expiresAt, new Date())
+      ),
+    });
 
         if (session) {
-          return NextResponse.json({
-            authenticated: true,
-            email: session.email,
-          });
+    return NextResponse.json({
+      authenticated: true,
+      email: session.email,
+    });
         }
       } catch (dbError) {
         console.warn('Database not available, falling back to cookie auth:', dbError);

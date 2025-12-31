@@ -102,11 +102,11 @@ export async function POST(request: NextRequest) {
 
     // Try to save to database, but don't fail if DB isn't configured
     try {
-      await db.insert(adminSessions).values({
-        email: ADMIN_EMAIL,
-        token,
-        expiresAt,
-      });
+    await db.insert(adminSessions).values({
+      email: ADMIN_EMAIL,
+      token,
+      expiresAt,
+    });
     } catch (dbError) {
       console.warn('Database not available, using cookie-only session:', dbError);
     }

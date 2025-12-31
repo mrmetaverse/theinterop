@@ -478,39 +478,39 @@ export default function AdminPage() {
               )}
 
               {/* Recent Posts */}
-              <div className="editorial-card">
-                <h2 className="text-xl font-display font-bold text-foreground mb-4">
-                  Recent Posts
-                </h2>
-                <div className="space-y-4">
-                  {dashboardData.posts.recent.map((post: any) => (
-                    <div
-                      key={post.slug}
-                      className="flex justify-between items-start py-4 border-b border-border-subtle last:border-0"
-                    >
-                      <div className="flex-1">
-                        <h3 className="font-display font-bold text-foreground mb-1">
-                          {post.title}
-                        </h3>
-                        <p className="text-sm text-foreground-muted mb-2">{post.excerpt}</p>
-                        <div className="flex items-center gap-4 text-xs text-foreground-muted">
-                          <span className="flex items-center gap-1">
-                            <Calendar className="w-3 h-3" />
-                            {new Date(post.date).toLocaleDateString()}
+            <div className="editorial-card">
+              <h2 className="text-xl font-display font-bold text-foreground mb-4">
+                Recent Posts
+              </h2>
+              <div className="space-y-4">
+                {dashboardData.posts.recent.map((post: any) => (
+                  <div
+                    key={post.slug}
+                    className="flex justify-between items-start py-4 border-b border-border-subtle last:border-0"
+                  >
+                    <div className="flex-1">
+                      <h3 className="font-display font-bold text-foreground mb-1">
+                        {post.title}
+                      </h3>
+                      <p className="text-sm text-foreground-muted mb-2">{post.excerpt}</p>
+                      <div className="flex items-center gap-4 text-xs text-foreground-muted">
+                        <span className="flex items-center gap-1">
+                          <Calendar className="w-3 h-3" />
+                          {new Date(post.date).toLocaleDateString()}
+                        </span>
+                        {post.emailSent ? (
+                          <span className="flex items-center gap-1 text-green-600">
+                            <CheckCircle className="w-3 h-3" />
+                            Email sent
                           </span>
-                          {post.emailSent ? (
-                            <span className="flex items-center gap-1 text-green-600">
-                              <CheckCircle className="w-3 h-3" />
-                              Email sent
-                            </span>
-                          ) : (
-                            <span className="flex items-center gap-1 text-foreground-muted">
-                              <Clock className="w-3 h-3" />
-                              Not sent
-                            </span>
-                          )}
-                        </div>
+                        ) : (
+                          <span className="flex items-center gap-1 text-foreground-muted">
+                            <Clock className="w-3 h-3" />
+                            Not sent
+                          </span>
+                        )}
                       </div>
+                    </div>
                       <div className="flex gap-2 ml-4">
                         {!post.emailSent && !newsletterQueue.find((p: any) => p.slug === post.slug) && (
                           <button
@@ -530,18 +530,18 @@ export default function AdminPage() {
                             In Queue
                           </button>
                         )}
-                        {!post.emailSent && (
-                          <button
-                            onClick={() => sendNewsletter(post.slug)}
-                            disabled={sendingNewsletter === post.slug}
+                    {!post.emailSent && (
+                      <button
+                        onClick={() => sendNewsletter(post.slug)}
+                        disabled={sendingNewsletter === post.slug}
                             className="btn-editorial text-xs"
-                          >
+                      >
                             {sendingNewsletter === post.slug ? 'Sending...' : 'Send Solo'}
-                          </button>
-                        )}
+                      </button>
+                    )}
                       </div>
-                    </div>
-                  ))}
+                  </div>
+                ))}
                 </div>
               </div>
             </div>

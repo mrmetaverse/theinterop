@@ -65,11 +65,13 @@ async function main() {
   try {
     execSync('which ffmpeg', { stdio: 'pipe' });
   } catch {
-    console.error('❌ ffmpeg is not installed. Please install it first:');
-    console.error('   - macOS: brew install ffmpeg');
-    console.error('   - Ubuntu/Debian: sudo apt install ffmpeg');
-    console.error('   - Arch: sudo pacman -S ffmpeg');
-    process.exit(1);
+    console.log('⚠️  ffmpeg is not installed. Skipping thumbnail generation.');
+    console.log('   Thumbnails should be generated locally and committed to git.');
+    console.log('   To generate thumbnails locally, install ffmpeg:');
+    console.log('   - macOS: brew install ffmpeg');
+    console.log('   - Ubuntu/Debian: sudo apt install ffmpeg');
+    console.log('   - Arch: sudo pacman -S ffmpeg');
+    process.exit(0); // Exit successfully, don't fail the build
   }
   
   const videoFiles = findVideoFiles(publicDir);
