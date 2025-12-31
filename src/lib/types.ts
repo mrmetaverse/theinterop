@@ -41,7 +41,7 @@ export interface Post extends PostFrontmatter {
   filePath: string; // relative path to MDX file
 }
 
-export interface PostMeta extends Omit<PostFrontmatter, 'draft'> {
+export interface PostMeta extends PostFrontmatter {
   readingTime: number;
   filePath?: string; // Optional for sample data
 }

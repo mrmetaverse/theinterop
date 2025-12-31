@@ -120,11 +120,10 @@ export default function AdminPage() {
     
     setSendingNewsletter(slug);
     try {
-      const response = await fetch('/api/send-newsletter', {
+      const response = await fetch('/api/admin/send-newsletter', {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_NEWSLETTER_API_KEY}`
         },
         body: JSON.stringify({ slug }),
       });
@@ -133,7 +132,8 @@ export default function AdminPage() {
         alert('Newsletter sent successfully!');
         loadDashboard();
       } else {
-        alert('Failed to send newsletter');
+        const error = await response.json();
+        alert(`Failed to send newsletter: ${error.error || 'Unknown error'}`);
       }
     } catch (error) {
       alert('Error sending newsletter');
