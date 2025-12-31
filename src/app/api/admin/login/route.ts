@@ -6,10 +6,65 @@ import { eq, and, gt } from 'drizzle-orm';
 const ADMIN_EMAIL = 'jesse@alton.tech';
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 
+// Simple in-memory rate limiting (resets on server restart)
+const loginAttempts = new Map<string, { count: number; resetAt: number }>();
+const MAX_ATTEMPTS = 5;
+const LOCKOUT_DURATION = 15 * 60 * 1000; // 15 minutes
+
+function getRateLimitKey(ip: string): string {
+  return `login:${ip}`;
+}
+
+function isRateLimited(ip: string): boolean {
+  const key = getRateLimitKey(ip);
+  const attempt = loginAttempts.get(key);
+  
+  if (!attempt) return false;
+  
+  if (Date.now() > attempt.resetAt) {
+    loginAttempts.delete(key);
+    return false;
+  }
+  
+  return attempt.count >= MAX_ATTEMPTS;
+}
+
+function recordLoginAttempt(ip: string, success: boolean) {
+  const key = getRateLimitKey(ip);
+  const attempt = loginAttempts.get(key);
+  
+  if (success) {
+    loginAttempts.delete(key);
+    return;
+  }
+  
+  if (!attempt) {
+    loginAttempts.set(key, {
+      count: 1,
+      resetAt: Date.now() + LOCKOUT_DURATION,
+    });
+  } else {
+    attempt.count++;
+  }
+}
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const { email, password } = body;
+
+    // Get IP for rate limiting
+    const ip = request.headers.get('x-forwarded-for') || 
+               request.headers.get('x-real-ip') || 
+               'unknown';
+
+    // Check rate limit
+    if (isRateLimited(ip)) {
+      return NextResponse.json(
+        { error: 'Too many login attempts. Please try again in 15 minutes.' },
+        { status: 429 }
+      );
+    }
 
     if (!ADMIN_PASSWORD) {
       console.error('ADMIN_PASSWORD not configured');
@@ -21,11 +76,15 @@ export async function POST(request: NextRequest) {
 
     // Validate credentials
     if (email !== ADMIN_EMAIL || password !== ADMIN_PASSWORD) {
+      recordLoginAttempt(ip, false);
       return NextResponse.json(
         { error: 'Invalid credentials' },
         { status: 401 }
       );
     }
+
+    // Success - clear rate limit
+    recordLoginAttempt(ip, true);
 
     // Create session token
     const token = randomBytes(32).toString('hex');

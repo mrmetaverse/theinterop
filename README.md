@@ -335,9 +335,50 @@ NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX
 
 ---
 
+## 🔒 Security
+
+This repository implements several security measures:
+
+- **Rate Limiting**: Admin login limited to 5 attempts per 15 minutes per IP
+- **HTTP-Only Cookies**: Session tokens protected from XSS
+- **Environment Variables**: All secrets stored as env vars, never in code
+- **Session Expiry**: Admin sessions expire after 7 days
+- **Bearer Token Auth**: Newsletter API protected with API key
+- **No Sensitive Data**: Database credentials only in Vercel environment
+
+### Environment Variables Required
+
+```env
+# Database (Vercel Postgres)
+POSTGRES_URL=
+POSTGRES_PRISMA_URL=
+POSTGRES_URL_NON_POOLING=
+
+# Email (Resend)
+RESEND_API_KEY=
+
+# Admin System
+ADMIN_PASSWORD=              # Generate with: npm run admin:password
+NEWSLETTER_API_KEY=          # For newsletter automation
+```
+
+### Admin Dashboard
+
+Access at `/admin` with credentials:
+- Email: `jesse@alton.tech`
+- Password: Set via `ADMIN_PASSWORD` environment variable
+
+Generate secure password: `npm run admin:password`
+
+---
+
 ## 📄 License
 
-MIT License — see [LICENSE](LICENSE) for details.
+**AltonTech Proprietary License** — This code is available for viewing and reference purposes ONLY. No use, copying, or modification permitted without explicit written permission. See [LICENSE.md](LICENSE.md) for full terms.
+
+Violations result in automatic assignment of all derivative works to AltonTech, Inc.
+
+For licensing inquiries: legal@alton.tech
 
 ---
 
