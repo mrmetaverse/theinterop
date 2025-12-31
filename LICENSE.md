@@ -60,7 +60,7 @@ OBTAINING A COPY OF THIS SOFTWARE AND ASSOCIATED DOCUMENTATION FILES (THE
    regarding the Software and supersedes all prior or contemporaneous 
    understandings regarding such subject matter.
 
-For licensing inquiries or permissions, contact: legal@alton.tech
+For licensing inquiries or permissions, contact: legal@virgent.ai
 
 AltonTech, Inc.
 https://alton.tech

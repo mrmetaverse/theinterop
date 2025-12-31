@@ -378,7 +378,7 @@ Generate secure password: `npm run admin:password`
 
 Violations result in automatic assignment of all derivative works to AltonTech, Inc.
 
-For licensing inquiries: legal@alton.tech
+For licensing inquiries: legal@virgent.ai
 
 ---
 
