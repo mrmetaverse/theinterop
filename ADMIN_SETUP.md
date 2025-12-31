@@ -38,11 +38,13 @@ NEWSLETTER_API_KEY=<your-existing-newsletter-api-key>
 
 ## 4. Access Admin Dashboard
 
-Navigate to: `https://jessealton.com/admin`
+Navigate to: `https://jessealton.com/mradmin`
 
 Login with:
 - Email: `jesse@alton.tech`
 - Password: `<your-generated-password>`
+
+**Note:** The admin panel is at `/mradmin` (not `/admin`) for security.
 
 ## Features
 

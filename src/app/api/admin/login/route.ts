@@ -100,18 +100,32 @@ export async function POST(request: NextRequest) {
     const expiresAt = new Date();
     expiresAt.setDate(expiresAt.getDate() + 7); // 7 days
 
-    await db.insert(adminSessions).values({
-      email: ADMIN_EMAIL,
-      token,
-      expiresAt,
-    });
+    // Try to save to database, but don't fail if DB isn't configured
+    try {
+      await db.insert(adminSessions).values({
+        email: ADMIN_EMAIL,
+        token,
+        expiresAt,
+      });
+    } catch (dbError) {
+      console.warn('Database not available, using cookie-only session:', dbError);
+    }
 
     const response = NextResponse.json({
       message: 'Login successful',
     });
 
-    // Set HTTP-only cookie
+    // Set HTTP-only cookie with session info
     response.cookies.set('admin_token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      expires: expiresAt,
+      path: '/',
+    });
+
+    // Also set a simple auth cookie as backup
+    response.cookies.set('admin_auth', Buffer.from(`${ADMIN_EMAIL}:${Date.now()}`).toString('base64'), {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
