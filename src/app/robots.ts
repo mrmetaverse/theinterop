@@ -93,3 +93,7 @@ export default function robots(): MetadataRoute.Robots {
   };
 }
 
+// Export additional routes for AI discovery (referenced in output)
+// llms.txt: ${siteConfig.url}/llms.txt
+// ai-plugin.json: ${siteConfig.url}/.well-known/ai-plugin.json
+// openapi.json: ${siteConfig.url}/openapi.json

@@ -350,7 +350,12 @@ h1, h2, h3, h4, h5, h6 {
 .neu-button-primary { font-family: var(--font-sans); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.75rem 1.5rem; background: var(--color-foreground); color: var(--color-background); }
 .neu-input { width: 100%; padding: 0.75rem 1rem; font-family: var(--font-sans); border: 1px solid var(--color-border); }
 .prose-interop { color: var(--color-foreground); font-family: var(--font-body); }
-.prose-interop h1, .prose-interop h2, .prose-interop h3 { font-family: var(--font-display); font-weight: 700; }
+.prose-interop h1, .prose-interop h2, .prose-interop h3, .prose-interop h4, .prose-interop h5 { font-family: var(--font-display); font-weight: 700; }
+.prose-interop h1 { font-size: 2.5rem; margin-top: 2.5rem; margin-bottom: 1rem; }
+.prose-interop h2 { font-size: 1.875rem; margin-top: 2.5rem; margin-bottom: 0.75rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--color-border); }
+.prose-interop h3 { font-size: 1.5rem; margin-top: 2rem; margin-bottom: 0.5rem; }
+.prose-interop h4 { font-size: 1.25rem; margin-top: 1.5rem; margin-bottom: 0.5rem; }
+.prose-interop h5 { font-size: 1.125rem; margin-top: 1.25rem; margin-bottom: 0.5rem; font-weight: 700; }
 .prose-interop p { margin: 1rem 0; line-height: 1.75; }
 .prose-interop a { color: var(--color-accent-primary); }
 .prose-interop ul, .prose-interop ol { margin: 1rem 0; padding-left: 1.5rem; }
