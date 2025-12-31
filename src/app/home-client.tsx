@@ -27,9 +27,31 @@ function ArticleCard({ post, size = 'medium' }: { post: PostMeta; size?: 'large'
     : null;
 
   if (size === 'large') {
+    // Check if we have a cover image and if it has a video version
+    const videoSrc = post.coverImage?.replace('.gif', '.mp4');
+    const hasVideo = post.coverImage?.endsWith('.gif') && videoSrc;
+    
     return (
       <article className="group">
         <Link href={`/blog/${post.slug}`} className="block">
+          {post.coverImage && (
+            <div className="mb-4 rounded-lg overflow-hidden">
+              {hasVideo ? (
+                <video 
+                  autoPlay 
+                  loop 
+                  muted 
+                  playsInline 
+                  className="w-full"
+                >
+                  <source src={videoSrc} type="video/mp4" />
+                  <img src={post.coverImage} alt={post.title} className="w-full" />
+                </video>
+              ) : (
+                <img src={post.coverImage} alt={post.title} className="w-full" />
+              )}
+            </div>
+          )}
           <span className="category-label">{CATEGORIES[post.category].label}</span>
           <h2 className="article-headline text-4xl md:text-5xl mt-2 mb-4 leading-tight">
             {post.title}
