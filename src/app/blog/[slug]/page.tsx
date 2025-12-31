@@ -8,7 +8,7 @@ import SubscribeForm from '@/components/ui/SubscribeForm';
 import PostCard from '@/components/ui/PostCard';
 import { getPostBySlug, getRelatedPosts, getAllPostsMeta } from '@/lib/posts';
 import { siteConfig, CATEGORIES, ORIGINAL_SOURCES, OriginalSource } from '@/lib/types';
-import { formatDate, getReadingTimeText, getCategoryClass, absoluteUrl } from '@/lib/utils';
+import { formatDate, getReadingTimeText, getCategoryClass, absoluteUrl, getSocialImageUrl } from '@/lib/utils';
 import { markdownToHtml } from '@/lib/markdown';
 
 interface PageProps {
@@ -33,10 +33,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 
   const postUrl = absoluteUrl(`/blog/${post.slug}`);
-  const imageUrl = post.coverImage || siteConfig.ogImage;
+  const imageUrl = getSocialImageUrl(post.coverImage);
 
   return {
-    title: post.title,
+    title: `${post.title} | ${siteConfig.author.name}`,
     description: post.excerpt,
     authors: [{ name: siteConfig.author.name, url: 'https://alton.tech' }],
     keywords: post.tags,
@@ -48,19 +48,46 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       modifiedTime: post.updatedDate || post.date,
       authors: [siteConfig.author.name],
       url: postUrl,
+      siteName: siteConfig.name,
       section: CATEGORIES[post.category]?.label,
       tags: post.tags,
-      images: [{ url: imageUrl, width: 1200, height: 630, alt: post.title }],
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: post.title,
+          type: 'image/png',
+        }
+      ],
+      locale: 'en_US',
     },
     twitter: {
       card: 'summary_large_image',
+      site: siteConfig.author.twitter,
+      creator: siteConfig.author.twitter,
       title: post.title,
       description: post.excerpt,
-      images: [imageUrl],
-      creator: siteConfig.author.twitter,
+      images: [
+        {
+          url: imageUrl,
+          alt: post.title,
+        }
+      ],
     },
     alternates: {
       canonical: postUrl,
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
     },
   };
 }

@@ -55,9 +55,10 @@ export const metadata: Metadata = {
     images: [
       {
         url: siteConfig.ogImage,
-        width: 400,
-        height: 400,
+        width: 1200,
+        height: 630,
         alt: `${siteConfig.author.name} - AI Strategy & Agent Development`,
+        type: 'image/png',
       },
     ],
   },
@@ -67,7 +68,12 @@ export const metadata: Metadata = {
     creator: siteConfig.author.twitter,
     title: siteConfig.name,
     description: siteConfig.description,
-    images: [siteConfig.ogImage],
+    images: [
+      {
+        url: siteConfig.ogImage,
+        alt: `${siteConfig.author.name} - AI Strategy & Agent Development`,
+      }
+    ],
   },
   robots: {
     index: true,
