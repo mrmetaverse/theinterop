@@ -146,6 +146,14 @@ interface NewsletterOptions {
   coverImage?: string;
 }
 
+interface BatchNewsletterPost {
+  title: string;
+  excerpt: string;
+  postUrl: string;
+  coverImage?: string;
+  date: string;
+}
+
 export async function sendNewsletterEmail(
   emails: string[],
   options: NewsletterOptions

@@ -14,7 +14,10 @@ import {
   CheckCircle,
   Clock,
   TrendingUp,
-  Calendar
+  Calendar,
+  Plus,
+  X,
+  List
 } from 'lucide-react';
 
 interface DashboardData {
@@ -56,6 +59,8 @@ export default function AdminPage() {
   const [replyText, setReplyText] = useState('');
   const [sendingReply, setSendingReply] = useState(false);
   const [sendingNewsletter, setSendingNewsletter] = useState<string | null>(null);
+  const [newsletterQueue, setNewsletterQueue] = useState<any[]>([]);
+  const [sendingBatchNewsletter, setSendingBatchNewsletter] = useState(false);
 
   useEffect(() => {
     checkAuth();
@@ -139,6 +144,52 @@ export default function AdminPage() {
       alert('Error sending newsletter');
     } finally {
       setSendingNewsletter(null);
+    }
+  };
+
+  const addToNewsletterQueue = (post: any) => {
+    if (!newsletterQueue.find(p => p.slug === post.slug)) {
+      setNewsletterQueue([...newsletterQueue, post]);
+    }
+  };
+
+  const removeFromNewsletterQueue = (slug: string) => {
+    setNewsletterQueue(newsletterQueue.filter(p => p.slug !== slug));
+  };
+
+  const sendBatchNewsletter = async () => {
+    if (newsletterQueue.length === 0) {
+      alert('Please add at least one article to the newsletter');
+      return;
+    }
+
+    if (!confirm(`Send newsletter with ${newsletterQueue.length} article(s)?`)) return;
+
+    setSendingBatchNewsletter(true);
+    try {
+      const response = await fetch('/api/admin/send-newsletter', {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          slugs: newsletterQueue.map(p => p.slug),
+          batch: true
+        }),
+      });
+
+      if (response.ok) {
+        alert('Batch newsletter sent successfully!');
+        setNewsletterQueue([]);
+        loadDashboard();
+      } else {
+        const error = await response.json();
+        alert(`Failed to send newsletter: ${error.error || 'Unknown error'}`);
+      }
+    } catch (error) {
+      alert('Error sending newsletter');
+    } finally {
+      setSendingBatchNewsletter(false);
     }
   };
 
@@ -379,50 +430,119 @@ export default function AdminPage() {
           )}
 
           {activeTab === 'posts' && dashboardData && (
-            <div className="editorial-card">
-              <h2 className="text-xl font-display font-bold text-foreground mb-4">
-                Recent Posts
-              </h2>
-              <div className="space-y-4">
-                {dashboardData.posts.recent.map((post: any) => (
-                  <div
-                    key={post.slug}
-                    className="flex justify-between items-start py-4 border-b border-border-subtle last:border-0"
-                  >
-                    <div className="flex-1">
-                      <h3 className="font-display font-bold text-foreground mb-1">
-                        {post.title}
-                      </h3>
-                      <p className="text-sm text-foreground-muted mb-2">{post.excerpt}</p>
-                      <div className="flex items-center gap-4 text-xs text-foreground-muted">
-                        <span className="flex items-center gap-1">
-                          <Calendar className="w-3 h-3" />
-                          {new Date(post.date).toLocaleDateString()}
-                        </span>
-                        {post.emailSent ? (
-                          <span className="flex items-center gap-1 text-green-600">
+            <div className="space-y-6">
+              {/* Newsletter Queue */}
+              {newsletterQueue.length > 0 && (
+                <div className="editorial-card bg-accent-primary/5 border-accent-primary">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-2">
+                      <List className="w-5 h-5 text-accent-primary" />
+                      <h2 className="text-xl font-display font-bold text-foreground">
+                        Newsletter Queue ({newsletterQueue.length})
+                      </h2>
+                    </div>
+                    <button
+                      onClick={sendBatchNewsletter}
+                      disabled={sendingBatchNewsletter}
+                      className="btn-editorial-primary text-xs"
+                    >
+                      <Send className="w-4 h-4" />
+                      {sendingBatchNewsletter ? 'Sending...' : 'Send Newsletter'}
+                    </button>
+                  </div>
+                  <div className="space-y-2">
+                    {newsletterQueue.map((post: any) => (
+                      <div
+                        key={post.slug}
+                        className="flex justify-between items-center p-3 bg-background rounded border border-border"
+                      >
+                        <div className="flex-1">
+                          <h4 className="font-display font-semibold text-foreground text-sm">
+                            {post.title}
+                          </h4>
+                          <p className="text-xs text-foreground-muted">
+                            {new Date(post.date).toLocaleDateString()}
+                          </p>
+                        </div>
+                        <button
+                          onClick={() => removeFromNewsletterQueue(post.slug)}
+                          className="p-2 hover:bg-background-elevated rounded transition-colors"
+                          title="Remove from queue"
+                        >
+                          <X className="w-4 h-4 text-foreground-muted hover:text-accent-secondary" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Recent Posts */}
+              <div className="editorial-card">
+                <h2 className="text-xl font-display font-bold text-foreground mb-4">
+                  Recent Posts
+                </h2>
+                <div className="space-y-4">
+                  {dashboardData.posts.recent.map((post: any) => (
+                    <div
+                      key={post.slug}
+                      className="flex justify-between items-start py-4 border-b border-border-subtle last:border-0"
+                    >
+                      <div className="flex-1">
+                        <h3 className="font-display font-bold text-foreground mb-1">
+                          {post.title}
+                        </h3>
+                        <p className="text-sm text-foreground-muted mb-2">{post.excerpt}</p>
+                        <div className="flex items-center gap-4 text-xs text-foreground-muted">
+                          <span className="flex items-center gap-1">
+                            <Calendar className="w-3 h-3" />
+                            {new Date(post.date).toLocaleDateString()}
+                          </span>
+                          {post.emailSent ? (
+                            <span className="flex items-center gap-1 text-green-600">
+                              <CheckCircle className="w-3 h-3" />
+                              Email sent
+                            </span>
+                          ) : (
+                            <span className="flex items-center gap-1 text-foreground-muted">
+                              <Clock className="w-3 h-3" />
+                              Not sent
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      <div className="flex gap-2 ml-4">
+                        {!post.emailSent && !newsletterQueue.find((p: any) => p.slug === post.slug) && (
+                          <button
+                            onClick={() => addToNewsletterQueue(post)}
+                            className="btn-editorial text-xs flex items-center gap-1"
+                          >
+                            <Plus className="w-3 h-3" />
+                            Add to Newsletter
+                          </button>
+                        )}
+                        {!post.emailSent && newsletterQueue.find((p: any) => p.slug === post.slug) && (
+                          <button
+                            onClick={() => removeFromNewsletterQueue(post.slug)}
+                            className="btn-editorial text-xs flex items-center gap-1 bg-accent-primary/10"
+                          >
                             <CheckCircle className="w-3 h-3" />
-                            Email sent
-                          </span>
-                        ) : (
-                          <span className="flex items-center gap-1 text-foreground-muted">
-                            <Clock className="w-3 h-3" />
-                            Not sent
-                          </span>
+                            In Queue
+                          </button>
+                        )}
+                        {!post.emailSent && (
+                          <button
+                            onClick={() => sendNewsletter(post.slug)}
+                            disabled={sendingNewsletter === post.slug}
+                            className="btn-editorial text-xs"
+                          >
+                            {sendingNewsletter === post.slug ? 'Sending...' : 'Send Solo'}
+                          </button>
                         )}
                       </div>
                     </div>
-                    {!post.emailSent && (
-                      <button
-                        onClick={() => sendNewsletter(post.slug)}
-                        disabled={sendingNewsletter === post.slug}
-                        className="btn-editorial text-xs ml-4"
-                      >
-                        {sendingNewsletter === post.slug ? 'Sending...' : 'Send Newsletter'}
-                      </button>
-                    )}
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
           )}

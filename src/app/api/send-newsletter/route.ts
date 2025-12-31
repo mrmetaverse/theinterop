@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db, subscribers, newsletterSends } from '@/lib/db';
-import { sendNewsletterEmail } from '@/lib/email';
+import { sendNewsletterEmail, sendBatchNewsletterEmail } from '@/lib/email';
 import { getPostBySlug } from '@/lib/posts';
 import { eq } from 'drizzle-orm';
 
@@ -28,8 +28,76 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { slug } = body;
+    const { slug, slugs, batch } = body;
 
+    // Get all confirmed subscribers
+    const confirmedSubscribers = await db.query.subscribers.findMany({
+      where: eq(subscribers.status, 'confirmed'),
+    });
+
+    if (confirmedSubscribers.length === 0) {
+      return NextResponse.json(
+        { message: 'No confirmed subscribers to send to', sent: 0 },
+        { status: 200 }
+      );
+    }
+
+    const emails = confirmedSubscribers.map((s) => s.email);
+
+    // Handle batch newsletter
+    if (batch && slugs && Array.isArray(slugs)) {
+      if (slugs.length === 0) {
+        return NextResponse.json(
+          { error: 'At least one post slug is required' },
+          { status: 400 }
+        );
+      }
+
+      // Get all posts
+      const posts = slugs.map(s => getPostBySlug(s)).filter(p => p !== null);
+      
+      if (posts.length === 0) {
+        return NextResponse.json(
+          { error: 'No valid posts found' },
+          { status: 404 }
+        );
+      }
+
+      // Prepare batch newsletter data
+      const batchPosts = posts.map(post => ({
+        title: post.title,
+        excerpt: post.excerpt,
+        postUrl: `${SITE_URL}/blog/${post.slug}`,
+        coverImage: post.coverImage ? `${SITE_URL}${post.coverImage}` : undefined,
+        date: post.date,
+      }));
+
+      // Send batch newsletter
+      const results = await sendBatchNewsletterEmail(emails, batchPosts);
+
+      const successful = results.filter((r) => r.success).length;
+      const failed = results.filter((r) => !r.success).length;
+
+      // Track each send in database
+      for (const slug of slugs) {
+        await db.insert(newsletterSends).values({
+          postSlug: slug,
+          recipientCount: emails.length,
+          successCount: successful,
+          failedCount: failed,
+        });
+      }
+
+      return NextResponse.json({
+        message: `Batch newsletter with ${posts.length} articles sent to ${successful} subscribers`,
+        sent: successful,
+        failed,
+        total: emails.length,
+        articles: posts.length,
+      });
+    }
+
+    // Handle single newsletter
     if (!slug) {
       return NextResponse.json(
         { error: 'Post slug is required' },
@@ -46,19 +114,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Get all confirmed subscribers
-    const confirmedSubscribers = await db.query.subscribers.findMany({
-      where: eq(subscribers.status, 'confirmed'),
-    });
-
-    if (confirmedSubscribers.length === 0) {
-      return NextResponse.json(
-        { message: 'No confirmed subscribers to send to', sent: 0 },
-        { status: 200 }
-      );
-    }
-
-    const emails = confirmedSubscribers.map((s) => s.email);
     const postUrl = `${SITE_URL}/blog/${post.slug}`;
 
     // Send newsletter
